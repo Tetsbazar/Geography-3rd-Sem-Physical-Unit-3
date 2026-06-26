@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test Bazar — Geography 3rd Sem | Unit 3 | Ch 3 | জলবায়ু</title>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Syne',sans-serif;background:#f0faf4;min-height:100vh;color:#1c2e24}
+.top-bar{background:#1a7a4a;padding:0.8rem 1.5rem;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
+.top-logo{font-size:1.1rem;font-weight:800;color:white}.top-logo span{color:#f9a825}
+.timer-box{background:rgba(255,255,255,0.15);border-radius:8px;padding:0.4rem 1rem;display:flex;align-items:center;gap:6px;font-size:1rem;font-weight:700;color:white}
+.timer-box.danger{background:#dc3545}
+.main{max-width:820px;margin:0 auto;padding:1.5rem 1rem}
+.hub-header{text-align:center;margin-bottom:2rem}
+.hub-header h1{font-family:'Tiro Bangla',serif;font-size:1.8rem;color:#1c2e24}
+.hub-header p{font-family:'Tiro Bangla',serif;font-size:0.95rem;color:#5a7a66;margin-top:0.3rem}
+.set-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem}
+.set-card{background:white;border-radius:14px;padding:1.5rem;border:1.5px solid #c5dccb;transition:all 0.2s;cursor:pointer;color:#1c2e24;box-shadow:0 2px 8px rgba(26,122,74,0.06)}
+.set-card:hover{transform:translateY(-3px);border-color:#1a7a4a;box-shadow:0 6px 20px rgba(26,122,74,0.12)}
+.set-card .icon{font-size:2.2rem;margin-bottom:0.3rem}
+.set-card .set-num{font-weight:700;font-size:1.1rem;color:#1a7a4a}
+.set-card .set-title{font-family:'Tiro Bangla',serif;font-size:0.85rem;color:#5a7a66;margin:0.2rem 0 0.5rem}
+.set-card .set-meta{display:flex;gap:1rem;font-size:0.7rem;color:#5a7a66}
+.set-card .set-meta span{background:#f0faf4;padding:0.15rem 0.6rem;border-radius:4px}
+.quiz-info{background:white;border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.2rem;border:1px solid #c5dccb;display:flex;gap:1rem;flex-wrap:wrap}
+.info-item{font-family:'Tiro Bangla',serif;font-size:0.85rem;color:#5a7a66}
+.info-item strong{color:#1a7a4a}
+.progress-wrap{background:#c5dccb;border-radius:4px;height:6px;margin-bottom:1.2rem;overflow:hidden}
+.progress-fill{height:100%;background:#1a7a4a;border-radius:4px;transition:width 0.3s}
+.q-card{background:white;border-radius:14px;padding:1.4rem;margin-bottom:1rem;border:1px solid #c5dccb;box-shadow:0 2px 10px rgba(26,122,74,0.06)}
+.q-num{font-size:0.75rem;font-weight:700;color:#e8730a;letter-spacing:1px;text-transform:uppercase;margin-bottom:0.6rem}
+.q-text{font-family:'Tiro Bangla',serif;font-size:1rem;color:#1c2e24;line-height:1.7;margin-bottom:1.1rem}
+.opts{display:flex;flex-direction:column;gap:0.6rem}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:0.7rem 1rem;border:1.5px solid #c5dccb;border-radius:10px;cursor:pointer;transition:all 0.15s;background:white;text-align:left;width:100%;font-family:inherit}
+.opt:hover:not(.disabled){border-color:#1a7a4a;background:#f0faf4}
+.opt-circle{min-width:28px;height:28px;border-radius:50%;border:1.5px solid #c5dccb;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#5a7a66;flex-shrink:0;transition:all 0.15s}
+.opt-text{font-family:'Tiro Bangla',serif;font-size:0.92rem;color:#1c2e24;line-height:1.6;padding-top:2px}
+.opt.correct{border-color:#1a7a4a;background:#e8f7ef}
+.opt.correct .opt-circle{background:#1a7a4a;border-color:#1a7a4a;color:white}
+.opt.wrong{border-color:#dc3545;background:#fdf0f0}
+.opt.wrong .opt-circle{background:#dc3545;border-color:#dc3545;color:white}
+.opt.disabled{cursor:default}
+.explanation{background:#f0faf4;border-left:3px solid #1a7a4a;border-radius:0 8px 8px 0;padding:0.8rem 1rem;margin-top:0.8rem;display:none}
+.explanation.show{display:block}
+.explanation p{font-family:'Tiro Bangla',serif;font-size:0.88rem;color:#2c4035;line-height:1.7}
+.explanation strong{color:#1a7a4a}
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:0.8rem}
+.score-show{font-family:'Tiro Bangla',serif;font-size:0.85rem;color:#5a7a66}
+.next-btn{background:#1a7a4a;color:white;border:none;padding:0.6rem 1.4rem;border-radius:8px;font-family:'Tiro Bangla',serif;font-size:0.9rem;cursor:pointer;transition:all 0.15s}
+.next-btn:hover{background:#2aad68}
+.next-btn:disabled{background:#c5dccb;cursor:default}
+.result-wrap{background:white;border-radius:14px;padding:2rem;text-align:center;border:1px solid #c5dccb;display:none}
+.result-wrap.show{display:block}
+.result-icon{font-size:3rem;margin-bottom:0.5rem}
+.result-score{font-size:3.5rem;font-weight:800;color:#1a7a4a}
+.result-total{font-size:1rem;color:#5a7a66;margin-bottom:0.5rem;font-family:'Tiro Bangla',serif}
+.result-grade{font-size:1.2rem;font-weight:600;color:#1c2e24;margin-bottom:1.5rem;font-family:'Tiro Bangla',serif}
+.result-bars{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem;margin-bottom:1.5rem}
+.result-bar{background:#f0faf4;border-radius:10px;padding:0.8rem;text-align:center}
+.rb-num{font-size:1.4rem;font-weight:800}
+.rb-label{font-family:'Tiro Bangla',serif;font-size:0.8rem;color:#5a7a66;margin-top:0.2rem}
+.retry-btn{background:#1a7a4a;color:white;border:none;padding:0.75rem 2rem;border-radius:8px;font-family:'Tiro Bangla',serif;font-size:1rem;cursor:pointer;margin-right:0.5rem}
+.review-btn{background:white;color:#1a7a4a;border:1.5px solid #1a7a4a;padding:0.75rem 2rem;border-radius:8px;font-family:'Tiro Bangla',serif;font-size:1rem;cursor:pointer}
+.back-btn{background:white;color:#5a7a66;border:1.5px solid #c5dccb;padding:0.75rem 2rem;border-radius:8px;font-family:'Tiro Bangla',serif;font-size:1rem;cursor:pointer;margin-top:0.6rem}
+.login-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:999;display:none}
+.login-overlay.active{display:flex}
+.login-modal{background:white;border-radius:16px;padding:2.5rem;max-width:420px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+.login-modal h2{font-family:'Tiro Bangla',serif;font-size:1.3rem;color:#1c2e24;text-align:center;margin-bottom:0.3rem}
+.login-modal p{font-family:'Tiro Bangla',serif;font-size:0.85rem;color:#5a7a66;text-align:center;margin-bottom:1.5rem}
+.login-modal label{font-size:0.8rem;font-weight:600;color:#1c2e24;display:block;margin-bottom:0.3rem}
+.login-modal input{width:100%;padding:0.7rem 1rem;border:1.5px solid #c5dccb;border-radius:8px;font-size:0.95rem;margin-bottom:1rem;font-family:'Tiro Bangla',serif}
+.login-modal input:focus{outline:none;border-color:#1a7a4a}
+.login-modal .login-btn{width:100%;background:#1a7a4a;color:white;border:none;padding:0.75rem;border-radius:8px;font-size:1rem;font-weight:700;cursor:pointer;font-family:'Tiro Bangla',serif}
+.login-modal .login-btn:hover{background:#2aad68}
+.login-modal .login-btn:disabled{background:#c5dccb;cursor:not-allowed}
+.login-modal .error-msg{color:#dc3545;font-size:0.8rem;text-align:center;margin-top:0.5rem;font-family:'Tiro Bangla',serif;display:none}
+.login-modal .limit-info{background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:0.6rem 1rem;margin-bottom:1rem;font-family:'Tiro Bangla',serif;font-size:0.8rem;color:#856404;display:none}
+.login-modal .set-name-display{background:#f0faf4;border-radius:8px;padding:0.5rem;text-align:center;margin-bottom:1rem;font-family:'Tiro Bangla',serif;font-size:0.9rem;color:#1a7a4a;font-weight:600}
+.hidden{display:none !important}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="top-logo">Test <span>Bazar</span></div>
+  <div class="timer-box" id="timerBox">⏱ <span id="timerDisplay">10:00</span></div>
+</div>
+
+<div class="main">
+
+  <!-- ===== LOGIN OVERLAY ===== -->
+  <div class="login-overlay" id="loginOverlay">
+    <div class="login-modal">
+      <h2>🔐 লগইন করুন</h2>
+      <p>Test শুরু করতে আপনার ইউজারনেম ও পাসওয়ার্ড দিন</p>
+      <div class="set-name-display" id="loginSetName">📚 Set 1</div>
+      <div class="limit-info" id="limitInfo">⚠️ <span id="limitMsg"></span></div>
+      <label>ইউজারনেম</label>
+      <input type="text" id="loginUsername" placeholder="আপনার ইউজারনেম লিখুন">
+      <label>পাসওয়ার্ড</label>
+      <input type="password" id="loginPassword" placeholder="আপনার পাসওয়ার্ড লিখুন" onkeydown="if(event.key==='Enter') doLoginFromSet()">
+      <button class="login-btn" id="loginBtn" onclick="doLoginFromSet()">✅ লগইন করে Test শুরু করো</button>
+      <div class="error-msg" id="loginError">❌ ভুল ইউজারনেম বা পাসওয়ার্ড। আবার চেষ্টা করুন।</div>
+    </div>
+  </div>
+
+  <!-- ===== HUB PAGE ===== -->
+  <div id="hubPage">
+    <div class="hub-header">
+      <h1>📚 Unit 3 — জলবায়ু</h1>
+      <p>অধ্যায় ৩: ঘনীভবন, মেঘ ও বৃষ্টিপাত — নিচের সেটগুলো থেকে বেছে নিন। Test শুরু করতে সেটে ক্লিক করুন এবং লগইন করুন।</p>
+      <div id="hubUserInfo" style="font-family:'Tiro Bangla',serif;font-size:0.85rem;color:#5a7a66;margin-top:0.5rem;"></div>
+    </div>
+    <div class="set-grid" id="setGrid"></div>
+  </div>
+
+  <!-- ===== TEST AREA ===== -->
+  <div id="testArea" class="hidden">
+    <div class="quiz-info">
+      <div class="info-item">🎓 <strong id="testSetName">ভূগোল</strong> — Unit 3 | Ch 3 | <span id="testSetLabel">Set 1</span></div>
+      <div class="info-item">📝 <span id="testTopic">জলবায়ু</span></div>
+    </div>
+    <div class="progress-wrap"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="q-card" id="qCard">
+      <div class="q-num" id="qNum">প্রশ্ন ১ / ১৫</div>
+      <div class="q-text" id="qText"></div>
+      <div class="opts" id="qOpts"></div>
+      <div class="explanation" id="explanation"><p id="explanationText"></p></div>
+      <div class="nav-row">
+        <div class="score-show" id="scoreShow">সঠিক: ০ | ভুল: ০</div>
+        <button class="next-btn" id="nextBtn" onclick="nextQ()" disabled>পরবর্তী →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== RESULT AREA ===== -->
+  <div class="result-wrap" id="resultWrap">
+    <div class="result-icon" id="resultIcon"></div>
+    <div class="result-score" id="finalScore"></div>
+    <div class="result-total">/ ১৫</div>
+    <div class="result-grade" id="resultGrade"></div>
+    <div class="result-bars">
+      <div class="result-bar"><div class="rb-num" id="rbCorrect" style="color:#1a7a4a"></div><div class="rb-label">সঠিক</div></div>
+      <div class="result-bar"><div class="rb-num" id="rbWrong" style="color:#dc3545"></div><div class="rb-label">ভুল</div></div>
+      <div class="result-bar"><div class="rb-num" id="rbPct" style="color:#e8730a"></div><div class="rb-label">স্কোর</div></div>
+    </div>
+    <div id="attemptInfo" style="font-family:'Tiro Bangla',serif;font-size:0.85rem;color:#5a7a66;margin-bottom:1rem;"></div>
+    <button class="retry-btn" onclick="startQuiz(currentSetId)">আবার চেষ্টা করো</button>
+    <button class="review-btn" onclick="showReview()">উত্তর দেখো</button>
+    <br>
+    <button class="back-btn" onclick="goToHub()">← Hub এ ফিরে যাও</button>
+  </div>
+
+</div>
+
+<script>
+// ============================================================
+//  ইউজার ডেটাবেস (সব username/password একই থাকবে)
+// ============================================================
+const MAX_ATTEMPTS = 10;
+const TOTAL_SETS = 7;
+
+const userData = [
+  {username:"alfa_romeo", password:"ARx7P29m", attempts:{}},
+  {username:"santos", password:"St8Qv41L", attempts:{}},
+  {username:"falcon", password:"Fc3MZ92k", attempts:{}},
+  {username:"titan", password:"Ti6Rp84W", attempts:{}},
+  {username:"matrix", password:"Mx5Kd73N", attempts:{}},
+  {username:"phoenix", password:"Ph9Js28V", attempts:{}},
+  {username:"cobra", password:"Cb4Ln65X", attempts:{}},
+  {username:"shadow", password:"Sh7Wp19Q", attempts:{}},
+  {username:"rocket", password:"Rc2Ty86M", attempts:{}},
+  {username:"warrior", password:"Wr8Az34K", attempts:{}},
+  {username:"eagle", password:"Eg5Xq72P", attempts:{}},
+  {username:"thunder", password:"Th1Vk93R", attempts:{}},
+  {username:"dragon", password:"Dr6Hm48N", attempts:{}},
+  {username:"panther", password:"Pa9Nc25J", attempts:{}},
+  {username:"viking", password:"Vi4Qs87L", attempts:{}},
+  {username:"hunter", password:"Hu7Bp31X", attempts:{}},
+  {username:"legend", password:"Le2Mz64T", attempts:{}},
+  {username:"ranger", password:"Ra8Kd95W", attempts:{}},
+  {username:"knight", password:"Kn3Xp57Q", attempts:{}},
+  {username:"turbo", password:"Tu6Lv21N", attempts:{}},
+  {username:"alpha", password:"Ap9Rm83K", attempts:{}},
+  {username:"bravo", password:"Br5Yt42M", attempts:{}},
+  {username:"charlie", password:"Ch7Wq16P", attempts:{}},
+  {username:"delta", password:"De4Nk78X", attempts:{}},
+  {username:"echo", password:"Ec8Jp35V", attempts:{}},
+  {username:"foxtrot", password:"Fx2Lm94Q", attempts:{}},
+  {username:"gamma", password:"Ga6Xs27T", attempts:{}},
+  {username:"helix", password:"He1Vp85N", attempts:{}},
+  {username:"inferno", password:"In9Qk43L", attempts:{}},
+  {username:"jaguar", password:"Ja5Mz72W", attempts:{}},
+  {username:"karma", password:"Ka8Rp14X", attempts:{}},
+  {username:"laser", password:"La3Tn67Q", attempts:{}},
+  {username:"meteor", password:"Me7Wx29P", attempts:{}},
+  {username:"nova", password:"No4Kz86M", attempts:{}},
+  {username:"omega", password:"Om2Lp53V", attempts:{}},
+  {username:"pegasus", password:"Pe9Xq71N", attempts:{}},
+  {username:"quantum", password:"Qu5Vr38K", attempts:{}},
+  {username:"rebel", password:"Re8Mz24T", attempts:{}},
+  {username:"storm", password:"St1Kp97W", attempts:{}},
+  {username:"tornado", password:"To6Nx45Q", attempts:{}},
+  {username:"ultra", password:"Ul3Wp82M", attempts:{}},
+  {username:"vector", password:"Ve7Lq19X", attempts:{}},
+  {username:"wolf", password:"Wo4Rm63P", attempts:{}},
+  {username:"xenon", password:"Xe9Tk25N", attempts:{}},
+  {username:"yodha", password:"Yo2Vz78K", attempts:{}},
+  {username:"zeus", password:"Ze8Mp41Q", attempts:{}},
+  {username:"atlas", password:"At5Lx93W", attempts:{}},
+  {username:"blaze", password:"Bl1Qn67M", attempts:{}},
+  {username:"cyclone", password:"Cy7Rp34T", attempts:{}},
+  {username:"dynamo", password:"Dy4Wk82X", attempts:{}},
+  {username:"apollo", password:"Ap7Kx94Lm", attempts:{}},
+  {username:"archer", password:"Ar3Vp62Qn", attempts:{}},
+  {username:"asteroid", password:"As8Tm15Rw", attempts:{}},
+  {username:"bandit", password:"Ba5Qz71Kp", attempts:{}},
+  {username:"bison", password:"Bi9Ln34Xt", attempts:{}},
+  {username:"bullet", password:"Bu2Wr86Mv", attempts:{}},
+  {username:"canyon", password:"Ca6Xp29Qk", attempts:{}},
+  {username:"captain", password:"Cp1Mz75Ln", attempts:{}},
+  {username:"comet", password:"Co8Tk43Wp", attempts:{}},
+  {username:"cyclonex", password:"Cy4Vr92Km", attempts:{}},
+  {username:"diesel", password:"Di7Lp18Qx", attempts:{}},
+  {username:"domino", password:"Do3Wn67Rt", attempts:{}},
+  {username:"duke", password:"Du9Kx25Mv", attempts:{}},
+  {username:"empire", password:"Em5Qp84Ln", attempts:{}},
+  {username:"explorer", password:"Ex2Vz39Kt", attempts:{}},
+  {username:"fighter", password:"Fi8Lm71Qw", attempts:{}},
+  {username:"galaxy", password:"Ga4Tk26Xp", attempts:{}},
+  {username:"gladiator", password:"Gl7Wp95Mn", attempts:{}},
+  {username:"gravity", password:"Gr1Nx53Lq", attempts:{}},
+  {username:"hawk", password:"Ha9Kz42Rt", attempts:{}},
+  {username:"horizon", password:"Ho5Vm87Xp", attempts:{}},
+  {username:"icefire", password:"Ic3Lp16Qn", attempts:{}},
+  {username:"impact", password:"Im8Wr74Kt", attempts:{}},
+  {username:"ironman", password:"Ir2Xq95Mv", attempts:{}},
+  {username:"jetstar", password:"Je6Nk38Lp", attempts:{}},
+  {username:"kingston", password:"Ki1Vp72Qw", attempts:{}},
+  {username:"lightning", password:"Li9Tm45Rx", attempts:{}},
+  {username:"majestic", password:"Ma4Kp83Ln", attempts:{}},
+  {username:"monster", password:"Mo7Wz21Qt", attempts:{}},
+  {username:"neptune", password:"Ne3Lx96Mv", attempts:{}},
+  {username:"ninja", password:"Ni8Qr54Kp", attempts:{}},
+  {username:"orbit", password:"Or2Vp73Ln", attempts:{}},
+  {username:"patriot", password:"Pa6Tk18Qw", attempts:{}},
+  {username:"pioneer", password:"Pi1Xm85Rt", attempts:{}},
+  {username:"predator", password:"Pr9Lq47Kv", attempts:{}},
+  {username:"proton", password:"Pt4Wn62Mx", attempts:{}},
+  {username:"rapid", password:"Ra7Kx93Lp", attempts:{}},
+  {username:"samurai", password:"Sa3Vp25Qn", attempts:{}},
+  {username:"sniper", password:"Sn8Tm71Rw", attempts:{}},
+  {username:"solaris", password:"So2Qk84Mv", attempts:{}},
+  {username:"spartan", password:"Sp6Ln39Xt", attempts:{}},
+  {username:"striker", password:"St1Wr57Kp", attempts:{}},
+  {username:"summit", password:"Su9Xp26Lm", attempts:{}},
+  {username:"taurus", password:"Ta5Vz91Qw", attempts:{}},
+  {username:"tempest", password:"Te3Kp48Rt", attempts:{}},
+  {username:"trident", password:"Tr8Wm72Ln", attempts:{}},
+  {username:"valiant", password:"Va2Nx35Qk", attempts:{}},
+  {username:"voyager", password:"Vo6Lp97Mx", attempts:{}},
+  {username:"wildfire", password:"Wi1Tk64Rv", attempts:{}},
+  {username:"zenith", password:"Ze9Qx28Lp", attempts:{}}
+];
+
+// ============================================================
+//  সব সেটের ডেটা (Set 1-7 for Geography Chapter 3: জলবায়ু)
+// ============================================================
+const allSets = {
+  1: {
+    name: 'Set 1',
+    icon: '💧',
+    topic: 'ঘনীভবন ও জল আকর্ষক কণা (Condensation & Hygroscopic Nuclei)',
+    questions: [
+      {q: 'সমস্ত প্রকার অধঃক্ষেপণের (Precipitation) প্রত্যক্ষ কারণ কী?', opts: ['বায়ুর চাপ বৃদ্ধি', 'জলীয় বাষ্পের ঘনীভবন', 'বায়ুর আয়তন প্রসারণ', 'অভিকর্ষজ বল'], ans: 1, exp: 'যে প্রক্রিয়ায় বাতাসের জলীয় বাষ্প ঘনীভূত হয়ে তরল জলকণা বা কঠিন অবস্থায় পরিণত হয় তাকে ঘনীভবন বলে, এবং এই ঘনীভবনই হলো সমস্ত প্রকার অধঃক্ষেপণ বা বৃষ্টিপাতের প্রত্যক্ষ কারণ।'},
+      {q: 'বায়ুমণ্ডলে উপস্থিত সর্বাধিক জল আকর্ষক কণা বা ঘনীভবন কণা (Condensation nuclei) কোনটি?', opts: ['ধূমকণা', 'ফুলের রেণু', 'অতি সূক্ষ্ম বালুকণা', 'সামুদ্রিক লবণকণা'], ans: 3, exp: 'বায়ুমণ্ডলে উপস্থিত উপাদানগুলির মধ্যে সামুদ্রিক লবণকণা হলো অতি সক্রিয় ঘনীভবন কেন্দ্রাণু বা সর্বাধিক জল আকর্ষক কণা, যার চারদিকে জলীয় বাষ্প দ্রুত ঘনীভূত হয়।'},
+      {q: 'সমগ্র বায়ুমণ্ডলে জলীয় বাষ্পের গড় পরিমাণ সাধারণত কত শতাংশ হয়ে থাকে?', opts: ['4%', '10%', '0.4%', '1%'], ans: 2, exp: 'বায়ুমণ্ডলীয় গোলযোগের প্রধান কারণ হলো জলীয় বাষ্প। সমগ্র বায়ুমণ্ডলে এই জলীয় বাষ্পের গড় পরিমাণ হলো মাত্র 0.4%।'},
+      {q: '১ মাইক্রন লবণকণার ১ মিমি ব্যাসের জলদকণায় (Cloud droplet) পরিণত হতে সাধারণত কত সময় লাগে?', opts: ['১০ সেকেন্ড', '৫০০ সেকেন্ড', '১ ঘণ্টা', '১০,০০০ সেকেন্ড বা প্রায় ৩ ঘণ্টা'], ans: 3, exp: 'একটি অতি ক্ষুদ্র ১ মাইক্রন ব্যাসের সক্রিয় লবণকণার চারপাশে জলীয় বাষ্প জমে সেটি ১ মিমি বা ১০০০ মাইক্রোমিটার ব্যাসের বড়ো জলদকণায় পরিণত হতে প্রায় ১০,০০০ সেকেন্ড বা প্রায় ৩ ঘণ্টা সময় লাগে।'},
+      {q: 'লবণের দ্রবণীয় প্রভাবের (Solute effect) ফলে বায়ুর আপেক্ষিক আর্দ্রতা কত শতাংশে পৌঁছানোর আগেই বাতাস সম্পৃক্ত হয়ে যায়?', opts: ['100%', '70% বা 80%', '50%', '110%'], ans: 1, exp: 'সাধারণ লবণ আপেক্ষিক আর্দ্রতা 100% হওয়ার অনেক আগেই ভেজা ভেজা হয়ে যায়। লবণের দ্রবণীয় প্রভাবের কারণে 70 বা 80 শতাংশ আর্দ্রতাতেই বাতাস সম্পৃক্ত হয়ে ভারসাম্য অবস্থায় পৌঁছায়।'},
+      {q: 'ঘনীভবন কেন্দ্রাণুর ব্যাসার্ধ অন্তত কত হলে তা জলদকণা সৃষ্টিতে সক্ষম হয়?', opts: ['10 মাইক্রোমিটার', '5 মাইক্রোমিটার', '0.1 মাইক্রোমিটারের কম', '1 মিলিমিটার'], ans: 2, exp: 'ঘনীভবন কেন্দ্রাণুর আকৃতি যত ছোটো হবে জলকণার বিকাশের হার তত বৃদ্ধি পাবে। অপেক্ষাকৃত 0.1µm-এর কম ব্যাসার্ধযুক্ত ঘনীভবন কেন্দ্রাণুই জলদকণা সৃষ্টিতে সবচেয়ে বেশি সক্ষম।'},
+      {q: 'একটি বৃষ্টির ফোঁটা সৃষ্টিতে গড়ে কতগুলি জলদকণা বা Cloud droplet-এর প্রয়োজন হয়?', opts: ['১ লক্ষ', '৫ লক্ষ', '১০ লক্ষ', '২০ লক্ষ'], ans: 2, exp: 'জলদকণাগুলি ভূপৃষ্ঠে এসে পৌঁছানোর জন্য যথেষ্ট বড়ো হওয়া প্রয়োজন। এক-একটি বৃষ্টিবিন্দুতে গড়ে 10 লক্ষ জলদকণার উপস্থিতি থাকলে তবেই সেটি ভূপৃষ্ঠে নেমে আসতে সক্ষম হয়।'},
+      {q: 'ডায়াবেটিক প্রক্রিয়া (Diabatic process) বলতে কী বোঝায়?', opts: ['বায়ুর আয়তন প্রসারিত হওয়া', 'পারিপার্শ্বিক অঞ্চলের সঙ্গে বায়ুস্থিত তাপের বিনিময় ঘটা', 'বায়ুর চাপ বৃদ্ধি পাওয়া', 'জলীয় বাষ্পের সরাসরি বরফে পরিণত হওয়া'], ans: 1, exp: 'যে প্রক্রিয়ায় পারিপার্শ্বিক অঞ্চলের সঙ্গে বায়ুস্থিত তাপের বিনিময় ঘটে (তাপ বেরিয়ে যায় বা সংযোজিত হয়), তাকে ডায়াবেটিক প্রক্রিয়া বলে। সাধারণত ভূপৃষ্ঠ-সংলগ্ন বাতাসের মধ্যেই এই তাপের বিনিময় ঘটে ঘনীভবন হয়।'},
+      {q: 'মেঘে ঘনীভবন কেন্দ্রাণুর সংখ্যার তুলনায় জলদকণার সংখ্যা কম হওয়ার প্রধান কারণ কী?', opts: ['অভিকর্ষজ বল', 'লবণের দ্রবণ প্রভাব', 'বক্রতা প্রভাব (Curvature effect)', 'তাপের বিকিরণ'], ans: 2, exp: 'অতি ক্ষুদ্র কণার বক্রতা বড়ো কণার চেয়ে বেশি হওয়ায় এদের পৃষ্ঠটান খুব বেশি থাকে এবং এদের ওপর লবণের দ্রবণীয় প্রভাব কার্যকরী হয় না। এই কারণে ক্ষুদ্র ও কম সক্রিয় কেন্দ্রাণুর ওপর ঘনীভবন ঘটে না বলে জলদকণার সংখ্যা কম হয়।'},
+      {q: 'বায়ুর উষ্ণতা হ্রাসের সাথে সাথে বাতাসের জলীয় বাষ্প ধারণ করার ক্ষমতা কীভাবে পরিবর্তিত হয়?', opts: ['বৃদ্ধি পায়', 'হ্রাস পায়', 'একই থাকে', 'শূন্য হয়ে যায়'], ans: 1, exp: 'বায়ুর তাপমাত্রা হ্রাস পেলে তার জলীয় বাষ্প ধারণ করার ক্ষমতা কমে যায়। এর ফলে নির্দিষ্ট পরিমাণ জলীয় বাষ্পেই বাতাস দ্রুত সম্পৃক্ত হয়ে পড়ে এবং ঘনীভবনের পরিমাণ বৃদ্ধি পায়।'},
+      {q: 'ঘনীভবন প্রক্রিয়া সংঘটিত হওয়ার জন্য বাতাসকে কোন্ অবস্থায় পৌঁছাতে হয়?', opts: ['হিমাঙ্কে', 'পরম শূন্য উষ্ণতায়', 'শিশিরাঙ্কে (Dew point)', 'বাষ্পীভবন বিন্দুতে'], ans: 2, exp: 'জলীয় বাষ্পপূর্ণ বাতাস শীতল হতে হতে যখন এমন একটি উষ্ণতায় পৌঁছায় যেখানে বাতাস সম্পৃক্ত হয়ে যায় এবং ঘনীভবন শুরু হয়, সেই উষ্ণতাকে শিশিরাঙ্ক বলে।'},
+      {q: 'ধ্রুপদি ঘনীভবন তত্ত্ব অনুসারে হিমাঙ্কের নীচে সব উষ্ণতায় ঘনীভবন কোন্ প্রক্রিয়ায় ঘটে?', opts: ['বাষ্পীভবন', 'ঊর্ধ্বপাতন (Sublimation)', 'গলন', 'বিকিরণ'], ans: 1, exp: 'ধ্রুপদি তত্ত্ব অনুযায়ী, তাপমাত্রা হিমাঙ্কের (০° সে) নীচে থাকলে সমস্ত পারিপার্শ্বিক পরিস্থিতিতে জলীয় বাষ্প সরাসরি গ্যাসীয় অবস্থা থেকে কঠিন বরফ বা তুষারে পরিণত হয়, যাকে ঊর্ধ্বপাতন প্রক্রিয়া বলে।'},
+      {q: '১ ঘনসেমি আয়তনের বায়ুতে জলদকণার (Cloud droplet) স্বাভাবিক সংখ্যা কত থাকে?', opts: ['১০ থেকে ১০০', '১০ থেকে ১০০০', '১০০ থেকে ১০০০০', '১ লক্ষ'], ans: 1, exp: 'বায়ুমণ্ডলে উপস্থিত ১ ঘনসেমি বায়ুতে অপেক্ষাকৃত ০.১ মাইক্রোমিটারের কম ব্যাসার্ধযুক্ত জলদকণার সংখ্যা সাধারণত ১০ থেকে ১০০০-এর মধ্যে থাকে।'},
+      {q: 'কোন্ উপাদানটি বায়ুমণ্ডলীয় গোলযোগ ঘটানোর প্রধান কারণ হিসেবে কাজ করে?', opts: ['কার্বন ডাইঅক্সাইড', 'ওজোন', 'জলীয় বাষ্প', 'মিথেন'], ans: 2, exp: 'বায়ুমণ্ডলের সমস্ত আবহাওয়াগত পরিবর্তন, মেঘ সৃষ্টি, বৃষ্টিপাত বা অন্যান্য গোলযোগের মূল কারণ হলো বাতাসে উপস্থিত জলীয় বাষ্পের ঘনীভবন ও বাষ্পীভবন।'},
+      {q: 'বায়ু শীতল ও ঘনীভূত হয়ে মেঘের উৎপত্তি ঘটায়- এ কথা সর্বপ্রথম কোন্ বিজ্ঞানী বলেছিলেন?', opts: ['দান্তে', 'ইসিডোর (Isidor)', 'অ্যারিস্টটল', 'টর বার্জেরন'], ans: 1, exp: 'প্রাচীনকালের বিজ্ঞানী ইসিডোর সর্বপ্রথম এই ধারণার কথা বলেছিলেন যে বায়ু শীতল ও ঘনীভূত হওয়ার ফলেই মেঘের উৎপত্তি ঘটে।'}
+    ]
+  },
+  2: {
+    name: 'Set 2',
+    icon: '🌫️',
+    topic: 'ঘনীভবনের বিভিন্ন রূপ (Forms of Condensation)',
+    questions: [
+      {q: 'রাত্রিবেলায় ভূপৃষ্ঠ দ্রুত তাপ বিকিরণ করে শীতল হলে ঘাসের ডগা বা পাতার ওপর যে অতিক্ষুদ্র জলকণা সঞ্চিত হয়, তাকে কী বলে?', opts: ['কুয়াশা', 'তুহিন', 'শিশির (Dew)', 'ধোঁয়াশা'], ans: 2, exp: 'রাত্রিবেলায় ভূপৃষ্ঠ শীতল হলে তার সংস্পর্শে থাকা জলীয় বাষ্প সরাসরি ঘনীভূত হয়ে শীতল কঠিন বস্তু বা ঘাসের ডগায় জলবিন্দুরূপে জমা হয়, একেই শিশির বলে।'},
+      {q: 'শিশির গঠনের জন্য নিচের কোন্ পরিবেশটি আদর্শ নয়?', opts: ['মেঘমুক্ত আকাশ', 'শান্ত আবহাওয়া', 'অনার্দ্র বা শুষ্ক বায়ুর উপস্থিতি', 'অপেক্ষাকৃত দীর্ঘ রাত্রি'], ans: 2, exp: 'শিশির সৃষ্টির জন্য বাতাসে পর্যাপ্ত জলীয় বাষ্প বা আর্দ্রতা থাকা একান্ত প্রয়োজন। শুষ্ক বায়ুতে জলীয় বাষ্পের অভাবে শিশির ঘনীভূত হতে পারে না।'},
+      {q: 'কোনো স্থানের বায়ুর উষ্ণতা হিমাঙ্কের (০° সে) নীচে নেমে গেলে জলীয় বাষ্প সরাসরি জমাট বেঁধে যে ক্ষুদ্র তুষার কেলাস গঠন করে, তাকে কী বলে?', opts: ['কুজঝটিকা', 'তুহিন (Frost)', 'শিশির', 'রাইম'], ans: 1, exp: 'বায়ুর উষ্ণতা হিমাঙ্কের নীচে থাকলে জলীয় বাষ্প সরাসরি কঠিন অবস্থায় বা তুষার কেলাসে পরিণত হয়। ভূপৃষ্ঠে জমাট বাঁধা এই ক্ষুদ্র তুষার কেলাসকে তুহিন বলে।'},
+      {q: 'তাপমাত্রার পরিবর্তনে ভূমি অপেক্ষা উদ্ভিদ দ্রুত তাপ ত্যাগ করায় উদ্ভিদের ওপর আগে যে তুহিন জমে, তাকে কী বলে?', opts: ['ভূমি তুহিন', 'উদ্ভিদসৃষ্ট তুহিন (Plant frost)', 'বায়ুস্থিত তুহিন', 'শুক্ল তুহিন'], ans: 1, exp: 'উদ্ভিদ তাপমাত্রা পরিবর্তনে অধিক সংবেদনশীল হয় এবং ভূমির চেয়ে দ্রুত তাপ ত্যাগ করে। ফলে রাস্তাঘাট তুহিনমুক্ত থাকলেও ঘাস বা উদ্ভিদের ওপর আগে তুহিন জমে, একে উদ্ভিদসৃষ্ট তুহিন বলে।'},
+      {q: 'স্যাঁতসেঁতে বাতাসে জলীয় বাষ্প দ্রুত জমাট বেঁধে সাদা চুল, দাড়ি বা পালকের মতো যে তুষার স্ফটিক গঠন করে, তাকে কী বলে?', opts: ['বায়ুস্থিত তুহিন', 'রাইম', 'শুক্ল তুহিন (Hoar frost)', 'শিলাবৃষ্টি'], ans: 2, exp: 'জলীয় বাষ্প ভূপৃষ্ঠে জমাট বেঁধে আঁশ, সূঁচ বা পালকের মতো সাদা চুলের ন্যায় যে তুষার স্ফটিক গঠন করে, তাকে শুক্ল তুহিন বা Hoar frost বলে।'},
+      {q: 'ভূপৃষ্ঠের নিকট ভাসমান যে ঘনীভূত ক্ষুদ্র জলকণা বায়ুকে অস্বচ্ছ করে তোলে এবং দৃশ্যমানতা হ্রাস করে, তাকে কী বলে?', opts: ['কুয়াশা (Fog)', 'শিশির', 'তুহিন', 'স্লিট'], ans: 0, exp: 'ভূপৃষ্ঠের নিকট জলীয় বাষ্পপূর্ণ বায়ু শীতল ও ঘনীভূত হয়ে ভাসমান ক্ষুদ্র জলকণার সৃষ্টি করে, যা বায়ুকে অস্বচ্ছ করে তোলে এবং দৃশ্যমানতা ১-৩ কিমির মধ্যে নামিয়ে আনে, একে কুয়াশা বলে।'},
+      {q: 'শীতল স্রোত ও উষ্ণ সমুদ্রস্রোতের মিলনস্থলে প্রধানত কোন্ প্রকার কুয়াশার সৃষ্টি হয়?', opts: ['বিকিরণ কুয়াশা', 'সীমান্ত কুয়াশা', 'অ্যাডভেকশন কুয়াশা (Advection fog)', 'বাষ্প কুয়াশা'], ans: 2, exp: 'উষ্ণ ও আর্দ্র বায়ু যখন অনুভূমিকভাবে প্রবাহিত হয়ে শীতল স্থান বা শীতল সমুদ্রস্রোতের ওপর দিয়ে যায়, তখন তা দ্রুত শীতল হয়ে অ্যাডভেকশন বা পরিচলন কুয়াশার সৃষ্টি করে।'},
+      {q: 'উর্ধ্বাকাশ মেঘমুক্ত থাকলে প্রচণ্ড ঠান্ডায় ভূপৃষ্ঠের ওপর তুষারকণাসমূহ একত্রিত হয়ে হিরের মতো জ্বলজ্বল করলে, তাকে কী বলে?', opts: ['হীরক ধূলি (Diamond dust)', 'রাইম', 'স্লিট', 'সামুদ্রিক ধোঁয়া'], ans: 0, exp: '-১০° সে উষ্ণতায় তুষারকণাসমূহ একত্রিত হয়ে ভূপৃষ্ঠে তুষার কুয়াশা তৈরি করে। এর ওপর সূর্যের আলো পড়লে তা হিরের মতো জ্বলজ্বল করে ওঠে, তাই একে হীরক ধূলি বলে।'},
+      {q: 'দুটি ভিন্নধর্মী বায়ুপুঞ্জ (উষ্ণ ও শীতল) পরস্পর মুখোমুখি হলে তাদের বিভাজন তল বা সীমান্ত বরাবর যে কুয়াশা সৃষ্টি হয়, তাকে কী বলে?', opts: ['বিকিরণ কুয়াশা', 'সীমান্ত কুয়াশা (Frontal fog)', 'বাষ্প কুয়াশা', 'কুজঝটিকা'], ans: 1, exp: 'উষ্ণ ও শীতল বায়ুপুঞ্জের মুখোমুখি মিলনে সৃষ্ট সীমান্ত বরাবর উষ্ণ বায়ু উপরে উঠে গেলে বাষ্পীভবন ও ঘনীভবনের ফলে সীমান্ত কুয়াশার সৃষ্টি হয়।'},
+      {q: 'ঘনীভবনের ফলে সৃষ্ট শীতল বায়ুতে ভাসমান ক্ষুদ্র জলবিন্দুর হালকা অস্বচ্ছ আবরণ, যার দৃশ্যমানতা ১ কিমির বেশি হয়, তাকে কী বলে?', opts: ['ধোঁয়াশা', 'কুয়াশা', 'কুজঝটিকা (Mist)', 'তুহিন'], ans: 2, exp: 'কুয়াশার তুলনায় কুজঝটিকা বা Mist-এর দৃশ্যমানতা বেশি থাকে (১ কিমির বেশি)। এটি কুয়াশার মতোই দেখতে একটি হালকা অস্বচ্ছ আবরণ মাত্র।'},
+      {q: 'কলকারখানা ও যানবাহন থেকে নির্গত দূষিত ধোঁয়া এবং কুয়াশা মিশ্রিত হয়ে যে বিষাক্ত ঘন অস্বচ্ছ আবরণ তৈরি হয়, তাকে কী বলে?', opts: ['রাইম', 'অ্যাডভেকশন কুয়াশা', 'ধোঁয়াশা (Smog)', 'হীরক ধূলি'], ans: 2, exp: 'ধোঁয়া (smoke) এবং কুয়াশা (fog) মিশ্রিত হয়ে ধোঁয়াশা (smog) তৈরি হয়, যার মধ্যে ওজোন, নাইট্রিক অ্যাসিড প্রভৃতি বিষাক্ত উপাদান থাকে। এটি সাধারণত শিল্পাঞ্চল ও শহরাঞ্চলে বেশি ঘটে।'},
+      {q: '1952 সালের ডিসেম্বর মাসে \'Great London Smog\'-এর কারণে লন্ডনে আনুমানিক কত মানুষ মারা যায়?', opts: ['১০০০ জন', '২০০০ জন', 'প্রায় ৪০০০ জন', '১০০০০ জন'], ans: 2, exp: '1952 সালে লন্ডনে সৃষ্ট তীব্র বিষাক্ত ধোঁয়াশার প্রভাবে শ্বাসকষ্টজনিত কারণে প্রায় ৪০০০ মানুষ মারা যায়, যা ইতিহাসে Great London Smog নামে পরিচিত।'},
+      {q: 'শীতল মেঘের জলকণা ও কুয়াশা কোনো শীতল প্রতিবন্ধককে স্পর্শ করা মাত্রই তুষার কেলাসে পরিণত হলে, তাকে কী বলে?', opts: ['রাইম (Rime) / কঠিনীভূত শিশির', 'স্লিট', 'শিশির', 'গ্লেজ'], ans: 0, exp: 'শীতল জলকণা বা কুয়াশা যখন কোনো শীতল বস্তুকে স্পর্শ করে বরফের পাতলা আবরণে মোড়া তুষার কেলাসে পরিণত হয়, তখন তাকে রাইম বা কঠিনীভূত শিশির বলে।'},
+      {q: 'নিচের কোল্টি ঘনীভবনের রূপ (Form of Condensation) নয়?', opts: ['শিশির', 'তুহিন', 'রাইম', 'স্লিট (Sleet)'], ans: 3, exp: 'শিশির, তুহিন, কুয়াশা, রাইম এগুলো সবই ঘনীভবনের বিভিন্ন রূপ। কিন্তু স্লিট হলো বরফ ও বৃষ্টির মিশ্রণ যা আকাশ থেকে ঝরে পড়ে, তাই এটি অধঃক্ষেপণের (Precipitation) রূপ।'},
+      {q: 'সূর্যালোকের উপস্থিতিতে নাইট্রোজেন ডাইঅক্সাইড (NO2) ও হাইড্রোকার্বনের বিক্রিয়ায় ধোঁয়াশাতে যে বিষাক্ত উপাদানটি তৈরি হয়, তার নাম কী?', opts: ['কার্বন মনোক্সাইড', 'প্যান (PAN - Peroxyacetyl Nitrate)', 'মিথেন', 'সালফার ডাইঅক্সাইড'], ans: 1, exp: 'সূর্যালোকের প্রভাবে রাসায়নিক ধোঁয়াশায় অক্সিজেন ও হাইড্রোকার্বনের সাথে নাইট্রিক অক্সাইডের বিক্রিয়ায় প্যান (PAN) এবং অন্যান্য বিষাক্ত গ্যাস উৎপন্ন হয়।'}
+    ]
+  },
+  3: {
+    name: 'Set 3',
+    icon: '☁️',
+    topic: 'মেঘ ও প্রান্তিক গতিবেগ (Clouds & Terminal Velocity)',
+    questions: [
+      {q: 'উর্ধ্বাকাশে ঘনীভবনের প্রধান ও সর্বাপেক্ষা পরিচিত উদাহরণ কোনটি?', opts: ['কুয়াশা', 'ধোঁয়াশা', 'মেঘ (Cloud)', 'তুহিন'], ans: 2, exp: 'উর্ধ্বাকাশে ভাসমান ঘনীভূত ক্ষুদ্র জলকণা বা তুষারকণার স্তূপকেই মেঘ বলে, যা উর্ধ্বাকাশে ঘনীভবনের প্রধান রূপ।'},
+      {q: 'মেঘ সৃষ্টিকারী ক্ষুদ্র ক্ষুদ্র জলকণা বা বরফকণার কেলাসগুলির ব্যাস সাধারণত কত মিলিমিটারের মধ্যে থাকে?', opts: ['0.02 - 0.06 মিমি', '1 - 5 মিমি', '10 - 20 মিমি', '0.5 - 1 মিমি'], ans: 0, exp: 'মেঘে থাকা জলকণা বা তুষারকণাগুলির আয়তন খুবই কম হয়, সাধারণত এদের ব্যাস 0.02 থেকে 0.06 মিলিমিটারের মধ্যেই সীমাবদ্ধ থাকে।'},
+      {q: 'উৎপত্তি অনুসারে হিমাঙ্কের বেশি উষ্ণতায় সৃষ্টি হওয়া মেঘকে কী মেঘ বলা হয়?', opts: ['শীতল মেঘ', 'উষ্ণ মেঘ (Warm cloud)', 'পালক মেঘ', 'স্তর মেঘ'], ans: 1, exp: 'হিমাঙ্কের (০° সে) বেশি উষ্ণতায় যে মেঘ সৃষ্টি হয় তাকে উষ্ণ মেঘ বলে। ক্রান্তীয় অঞ্চলে এ ধরনের মেঘ বেশি দেখা যায় এবং এর শীর্ষদেশের তাপমাত্রা কদাচিৎ -৭° সে হয়।'},
+      {q: 'শীতল মেঘের (Cold cloud) শীর্ষদেশের উষ্ণতা সর্বনিম্ন কত ডিগ্রি সেলসিয়াস পর্যন্ত নেমে যেতে পারে?', opts: ['0°C', '-10°C', '-40°C', '-80°C'], ans: 2, exp: 'হিমাঙ্কের নীচে সৃষ্টি হওয়া শীতল মেঘের শীর্ষদেশের উষ্ণতা অত্যন্ত কম হয়, যা -৪০° সে. পর্যন্ত নামতে পারে এবং এর পুরোটাই বরফ কেলাস দিয়ে গঠিত হয়।'},
+      {q: 'লাতিন শব্দ অনুযায়ী \'সিরাস\' (Cirrus) কথাটির অর্থ কী ধরনের মেঘ?', opts: ['স্তর মেঘ', 'স্তূপ মেঘ', 'পালক মেঘ', 'জলদ মেঘ'], ans: 2, exp: 'লাতিন শব্দ অনুযায়ী সিরাস (Cirrus) মানে হলো পালক মেঘ, যা আকাশের সর্বোচ্চ স্তরে অবস্থান করে এবং বরফকণায় পূর্ণ থাকে।'},
+      {q: '\'International Cloud Atlas\' অনুযায়ী মেঘকে প্রধানত কয়টি শ্রেণিতে ভাগ করা হয়েছে?', opts: ['৪টি', '৭টি', '১০টি', '১২টি'], ans: 2, exp: 'উচ্চতা ও আকৃতি অনুযায়ী International Cloud Atlas ৪টি বর্গের অধীনে মেঘকে প্রধান ১০টি শ্রেণিতে চিহ্নিত করেছে (যেমন- Cirrus, Stratus, Cumulus ইত্যাদি)।'},
+      {q: 'কোন শ্রেণির মেঘ আকাশে সবচেয়ে উঁচুতে (৫ থেকে ১৩ কিমি উচ্চতায়) অবস্থান করে?', opts: ['স্ট্র্যাটাস (Stratus)', 'কিউমুলাস (Cumulus)', 'নিম্বোস্ট্র্যাটাস (Nimbostratus)', 'সিরাস (Cirrus)'], ans: 3, exp: 'সিরাস, সিরোস্ট্র্যাটাস এবং সিরোকিউমুলাস মেঘগুলি মধ্য অক্ষাংশে ৫ থেকে ১৩ কিমি উঁচুতে অবস্থান করে এবং এরাই আকাশের সবচেয়ে উঁচু মেঘ।'},
+      {q: 'আকাশ কালো করে আসা \'জলদ মেঘ\' বা বৃষ্টিবাহী মেঘকে ইংরেজিতে কী বলা হয়?', opts: ['সিরাস', 'কিউমুলাস', 'নিম্বাস (Nimbus)', 'স্ট্র্যাটাস'], ans: 2, exp: 'Luke Howard এই প্রকার মেঘের নামকরণ করেছেন নিম্বাস বা জলদ মেঘ, যার অর্থ হলো যে মেঘ থেকে বৃষ্টি অবশ্যম্ভাবী।'},
+      {q: 'উলম্বভাবে বিস্তৃত কোন মেঘ থেকে প্রধানত বজ্রঝড় ও বজ্রবিদ্যুৎ-সহ ভারী বৃষ্টিপাত হয়ে থাকে?', opts: ['অল্টোস্ট্র্যাটাস', 'কিউমুলোনিম্বাস (Cumulonimbus)', 'সিরোকিউমুলাস', 'স্ট্র্যাটোকিউমুলাস'], ans: 1, exp: 'কিউমুলোনিম্বাস হলো উলম্ব মেঘ বা বজ্রমেঘ। বায়ুর প্রবল উত্থানের ফলে এই মেঘ গঠিত হয় এবং এর থেকেই বজ্রবিদ্যুৎ-সহ শিলাবৃষ্টি বা ভারী বৃষ্টিপাত ঘটে।'},
+      {q: 'শান্ত বা স্থির বায়ুতে বৃষ্টিবিন্দুর পতন বেগ প্রধানত কোন্ দুটি বল দ্বারা নিয়ন্ত্রিত হয়?', opts: ['প্লবতা ও সান্দ্রতা', 'অভিকর্ষ বল ও ঘর্ষণজনিত প্রতিরোধী বল', 'কেন্দ্রাতিগ বল ও মহাকর্ষ বল', 'বায়ুর চাপ ও উষ্ণতা'], ans: 1, exp: 'কণাগুলিকে অভিকর্ষ বল নীচের দিকে টানে এবং বায়ুর ঘর্ষণজনিত প্রতিরোধী বল ঊর্ধ্বমুখী বাধা দেয়। এই দুটি বলের দ্বারাই কণার পতন বেগ বা প্রান্তিক গতিবেগ নিয়ন্ত্রিত হয়।'},
+      {q: 'পতনের সময় অভিকর্ষ বল ও বাতাসের প্রতিরোধী বল পরস্পর সমান হয়ে ভারসাম্য অবস্থায় এলে কণা যে সমান বেগে নীচে নামে, তাকে কী বলে?', opts: ['প্রাথমিক বেগ', 'প্রান্তিক গতিবেগ (Terminal Velocity)', 'সংকট বেগ', 'আপেক্ষিক বেগ'], ans: 1, exp: 'একটি আদর্শ মাত্রায় প্রতিরোধী বল ও ধ্রুবক অভিকর্ষ বল সমান হয়ে ভারসাম্য অবস্থায় আসে। তখন বৃষ্টির ফোঁটা বা তুষার কণা যে স্থির বা সমান বেগে নীচে নামে তাকে প্রান্তিক গতিবেগ বলে।'},
+      {q: '৫ মিলিমিটার (৫০০০ µm) ব্যাসযুক্ত বৃহদাকৃতি বৃষ্টির ফোঁটার (Large Raindrop) প্রান্তিক গতিবেগ কত হয়?', opts: ['০.৩ মি/সেকেন্ড', '১.৫ মি/সেকেন্ড', '৪.০ মি/সেকেন্ড', '৮.৯ মি/সেকেন্ড'], ans: 3, exp: 'কণার আকৃতি যত বড়ো হয় তার প্রান্তিক গতিবেগ তত বেশি হয়। ৫০০০ মাইক্রোমিটার ব্যাসযুক্ত বড়ো বৃষ্টির ফোঁটার প্রান্তিক গতিবেগ সবচেয়ে বেশি, ৮.৯ মিটার/সেকেন্ড।'},
+      {q: '০.২ মিলিমিটার বা ২০০ মাইক্রোমিটার ব্যাসযুক্ত ঝিরঝিরে বৃষ্টির (Drizzle) প্রান্তিক গতিবেগ কত হয়?', opts: ['৮.৯ মি/সেকেন্ড', '১.৫ মি/সেকেন্ড', '০.৩ মি/সেকেন্ড', '০.০৩ মি/সেকেন্ড'], ans: 2, exp: 'ঝিরঝিরে বৃষ্টি বা Drizzle-এর কণাগুলি খুব ছোটো হয়। ২০০ µm ব্যাসের এই কণাগুলির প্রান্তিক গতিবেগ স্থির বায়ুতে মাত্র ০.৩ মিটার/সেকেন্ড হয়ে থাকে।'},
+      {q: 'মেঘ থেকে বৃষ্টির ফোঁটা ঠিক কখন নীচের দিকে নামতে শুরু করে?', opts: ['যখন ঊর্ধ্বগামী বায়ুস্রোত বন্ধ হয়ে যায়', 'যখন বাতাসের প্রতিরোধ বল শূন্য হয়', 'যখন বাতাসের প্রতিরোধ বল ও অভিকর্ষ বল ভারসাম্য লাভ করে বা সমান হয়', 'যখন অভিকর্ষ বল সর্বাধিক হয়'], ans: 2, exp: 'বৃষ্টিবিন্দু বড়ো হওয়ার পর অভিকর্ষ বল এবং ঊর্ধ্বমুখী বাতাসের ঘর্ষণজনিত প্রতিরোধী বল যখন সমান হয় (ভারসাম্য লাভ করে), তখনই কণাটি প্রান্তিক গতিবেগ নিয়ে মেঘ থেকে নীচে নামতে শুরু করে।'},
+      {q: 'বায়ুমণ্ডলে ধূলিকণা, লবণকণা, ফুলের রেণু, ধূমকণা প্রভৃতি ভাসমান কঠিন ও তরল কণাগুলিকে একত্রে কী বলা হয়?', opts: ['মন্টিসল', 'এরোসল (Aerosol)', 'হাইড্রোসোল', 'বাষ্পকণা'], ans: 1, exp: 'বায়ুমণ্ডলে উপস্থিত ভাসমান অতি সূক্ষ্ম ধূলিকণা, লবণকণা, রেণু ইত্যাদিকে একত্রে এরোসল বলা হয়। এরাই মূলত ঘনীভবন কেন্দ্রাণু হিসেবে কাজ করে জলীয় বাষ্পকে আশ্রয় দেয়।'}
+    ]
+  },
+  4: {
+    name: 'Set 4',
+    icon: '❄️',
+    topic: 'বরফ-কেলাস তত্ত্ব (Ice-Crystal Theory)',
+    questions: [
+      {q: 'নাতিশীতোষ্ণ ও হিমমণ্ডলীয় অঞ্চলে কীভাবে অধঃক্ষেপণ ঘটে তা ব্যাখ্যা করতে কোন্ তত্ত্বটি ব্যবহার করা হয়?', opts: ['সংঘর্ষ-সম্মিলন তত্ত্ব', 'জলীয় বাষ্পের সংকোচন তত্ত্ব', 'বরফ-কেলাস তত্ত্ব (Ice-Crystal Theory)', 'পরিচলন তত্ত্ব'], ans: 2, exp: 'মধ্য ও উচ্চ অক্ষাংশীয় অঞ্চলে (নাতিশীতোষ্ণ ও হিমমণ্ডলে) শীতল মেঘের উপস্থিতি থাকে। এই শীতল মেঘ থেকে কীভাবে বৃষ্টিপাত বা তুষারপাত হয় তা বরফ-কেলাস তত্ত্বের মাধ্যমে নিখুঁতভাবে ব্যাখ্যা করা হয়।'},
+      {q: 'বরফ-কেলাস তত্ত্বটি প্রথম কোন্ কোন্ আবহবিদ দ্বারা প্রতিষ্ঠিত হয়?', opts: ['ই জি বোয়েন ও সিম্পসন', 'হ্যালি ও ল্যামবার্ট', 'ওয়েগনার, বার্জেরন ও ফিন্ডিসন', 'ডেসকার্টিন ও পেঙ্ক'], ans: 2, exp: 'এই তত্ত্বটি আলফ্রেড ওয়েগনার, টর বার্জেরন এবং ওয়ালটার ফিন্ডিসন-এর সম্মিলিত গবেষণার ফল। ১৯৩৮ সালে এটি সর্বজনগ্রাহ্য হয়, তাই একে ওয়েগনার-বার্জেরন-ফিন্ডিসন তত্ত্বও বলা হয়।'},
+      {q: 'বরফ-কেলাস তত্ত্ব বা বার্জেরন প্রক্রিয়া সংঘটিত হওয়ার জন্য মেঘের কোন্ অঞ্চলের উপস্থিতি আবশ্যক?', opts: ['কেবল জলকণা সমৃদ্ধ অঞ্চল', 'মেঘপুঞ্জের মধ্যবর্তী মিশ্রণ অঞ্চল', 'মেঘের সর্বোচ্চ উষ্ণ অঞ্চল', 'মেঘের নীচের উষ্ণ অঞ্চল'], ans: 1, exp: 'বার্জেরন প্রক্রিয়াটি সংঘটিত হয় মেঘপুঞ্জের মধ্যবর্তী অংশে বা মিশ্রণ অঞ্চলে, যেখানে অতি শীতল জলবিন্দু (supercooled droplet) এবং তুষার কেলাসের সহাবস্থান ঘটে।'},
+      {q: 'অতি শীতল জলবিন্দুর (Supercooled water droplet) সাপেক্ষে বরফ কেলাসের ওপর সম্পৃক্ত বাষ্পচাপের (Saturation vapour pressure) পার্থক্য কেমন হয়?', opts: ['বরফপৃষ্ঠে বাষ্পচাপ বেশি এবং জলপৃষ্ঠে কম হয়', 'বরফপৃষ্ঠে ও জলপৃষ্ঠে সমান হয়', 'বরফপৃষ্ঠ অপেক্ষা অতি শীতল জলবিন্দুর ওপর বাষ্পচাপ অধিকতর বেশি হয়', 'উষ্ণতার ওপর নির্ভর করে না'], ans: 2, exp: 'হিমাঙ্কের নীচে জলের ওপর সম্পৃক্ত বাষ্পচাপ বেশি এবং বরফের ওপর কম থাকে। এই বাষ্পচাপের পার্থক্যের জন্যই জলকণা থেকে বাষ্পীভূত হয়ে জলীয় বাষ্প সরাসরি বরফ কেলাসে জমা হতে থাকে।'},
+      {q: 'কোন্ তাপমাত্রায় জলপৃষ্ঠ ও বরফপৃষ্ঠের মধ্যে সম্পৃক্ত বাষ্পচাপের পার্থক্য সবচেয়ে বেশি হয়?', opts: ['0°C', '-4°C', '-14°C', '-40°C'], ans: 2, exp: 'জলপৃষ্ঠে ও বরফপৃষ্ঠে সম্পৃক্ত বাষ্পচাপের পার্থক্য উষ্ণতা হ্রাস পাওয়ার সাথে সাথে বাড়তে থাকে এবং -১৪° সে উষ্ণতায় এই পার্থক্য সবচেয়ে বেশি হয়।'},
+      {q: '-৪০° সেলসিয়াস তাপমাত্রায় মেঘের অতি শীতল জলকণাগুলির কী অবস্থা হয়?', opts: ['বাষ্পীভূত হয়ে যায়', 'সমস্ত ঘনীভূত জলকণাগুলি বরফ কেলাসে পরিণত হয়ে যায়', 'বৃষ্টির ফোঁটায় পরিণত হয়', 'পুনরায় গ্যাসে পরিণত হয়'], ans: 1, exp: 'তাপমাত্রা যত কমতে থাকে জলকণা তত দ্রুত বরফ কেলাসে রূপান্তরিত হয়। -৪০° সে তাপমাত্রায় পৌঁছে সমস্ত অতি শীতল জলকণাগুলি সম্পূর্ণ তুষার কেলাসে বা বরফে পরিণত হয়ে যায়।'},
+      {q: 'যে ঘনীভবন কেন্দ্রাণুর উপস্থিতিতে অতি শীতল জলকণাগুলি সংস্পর্শে এলেই হিমায়িত বা বরফে পরিণত হয়ে যায়, তাকে কী বলে?', opts: ['অবক্ষেপ কেন্দ্রাণু', 'হিমন কেন্দ্রাণু (Freezing nuclei)', 'সংযোগ কেন্দ্রাণু', 'লবণকণা'], ans: 1, exp: 'অনেক সময় অতি শীতল জলকণাগুলি কিছু বিশেষ কেন্দ্রাণুর সংস্পর্শে এলেই হিমায়িত হয়ে যায়, এদের হিমন কেন্দ্রাণু বা Freezing nuclei বলে।'},
+      {q: 'বার্জেরন প্রক্রিয়ায় অতি শীতল জলবিন্দু ও তুষার কেলাসের সহাবস্থানের ফলে কী ঘটে?', opts: ['জলবিন্দুগুলি বরফ কেলাসকে গলিয়ে দেয়', 'বাষ্পচাপের পার্থক্যের কারণে অতি শীতল জলবিন্দুগুলি শোষিত হয়ে তুষার কেলাস গঠন করে', 'তুষার কেলাস গ্যাসে পরিণত হয়', 'দুটি মিলে শিলাবৃষ্টি তৈরি করে'], ans: 1, exp: 'বাষ্পচাপের পার্থক্যের জন্য জলকণা থেকে তীব্র বাষ্পীয় ঢাল বরফ কেলাসের দিকে তৈরি হয়। ফলে জলবিন্দুগুলি থেকে জলীয় বাষ্প শোষিত হয়ে তুষার কেলাস বড়ো হতে থাকে।'},
+      {q: 'মেঘের অধিক উচ্চতায় বরফ কেলাস বড়ো ও ভারী হয়ে নীচের দিকে নামার সময় অন্যান্য অতি শীতল জলবিন্দু ও বরফ কেলাসের সাথে ধাক্কা লাগলে কী ঘটে?', opts: ['তারা পুনরায় গ্যাসে পরিণত হয়', 'সংঘর্ষ ও সম্মিলন ঘটে এবং বরফ কেলাসগুলি আরও বড়ো হয়', 'তারা মেঘের ওপরে উঠে যায়', 'তারা ভেঙে বৃষ্টিবিন্দুতে পরিণত হয়'], ans: 1, exp: 'ভারী হয়ে বরফ কেলাসগুলি নীচের দিকে নামার সময় ছোটো ও ধীরগামী জলবিন্দু ও বরফ কেলাসের সাথে তাদের সংঘর্ষ ও সম্মিলন ঘটে, যার ফলে তারা আরও বড়ো আকৃতি ধারণ করে।'},
+      {q: 'হিমাঙ্কের নীচে ঘনীভবনের লীনতাপ (Latent heat) ত্যাগের কারণে জলকণাগুলির ওপর কী প্রভাব পড়ে?', opts: ['জলকণা আরও উষ্ণ হয়ে ওঠে', 'জলকণা দ্রুত জমে যায়', 'জলকণার আয়তন কমে যায়', 'জলকণা অদৃশ্য হয়ে যায়'], ans: 0, exp: 'হিমাঙ্ক উষ্ণতার নীচে যখন ঘনীভবন হয়, তখন লীনতাপ ত্যাগের কারণে জলকণা আরও উষ্ণ হয়ে ওঠে। এই তাপীয় আলোড়নের ফলে আণবিক বন্ধন শিথিল হয়, যা হিমাঙ্ক উষ্ণতায় বরফকণা সৃষ্টিতে বাধা দেয়।'},
+      {q: 'মেঘের মধ্য দিয়ে বিমান যাওয়ার সময় অনেক ক্ষেত্রে বিমানের গায়ে বরফকণা জমা হতে দেখা যায় কেন?', opts: ['মেঘের মধ্যে বরফের চাঁই থাকে বলে', 'বিমানের ইঞ্জিনের ধোঁয়ায় বরফ তৈরি হয় বলে', 'আলোড়িত হলে অতি শীতল জলকণা বরফে পরিণত হয় বলে', 'বিমানের গতিবেগের কারণে'], ans: 2, exp: 'মেঘের মধ্যে থাকা অতি শীতল জলকণা (Supercooled water droplet) কোনো কিছুর সংস্পর্শে এসে বা আলোড়িত হলেই দ্রুত বরফে পরিণত হয়। তাই বিমানের গায়ে এরা বরফ হিসেবে জমে যায়।'},
+      {q: 'বরফ-কেলাসন তত্ত্বের বিবর্তনের সঠিক ক্রমটি কোন্ বিজ্ঞানীদের নির্দেশ করে?', opts: ['ফিন্ডিসন → ওয়েগনার → গ্লিকম্যান → বার্জেরন', 'ওয়েগনার → বার্জেরন → ফিন্ডিসন → গ্লিকম্যান', 'বার্জেরন → ওয়েগনার → গ্লিকম্যান → ফিন্ডিসন', 'ওয়েগনার → গ্লিকম্যান → ফিন্ডিসন → বার্জেরন'], ans: 1, exp: 'বরফ কেলাস তত্ত্বটি ধাপে ধাপে বিকশিত হয়েছে। প্রথমে আলফ্রেড ওয়েগনার ধারণা দেন, তারপর টর বার্জেরন একে প্রতিষ্ঠিত করেন, পরে ওয়ালটার ফিন্ডিসন এর ব্যাখ্যা দেন এবং আধুনিককালে টি গ্লিকম্যান প্রভৃতিরা এটি নিয়ে কাজ করেছেন।'},
+      {q: 'বৃষ্টিপাত সংঘটনে কোন্ অক্ষাংশীয় অঞ্চলের জন্য বরফ-কেলাস তত্ত্বটি সর্বাপেক্ষা প্রযোজ্য?', opts: ['নিরক্ষীয় অঞ্চল', 'ক্রান্তীয় অঞ্চল', 'উপক্রান্তীয় অঞ্চল', 'নাতিশীতোষ্ণ অঞ্চল'], ans: 3, exp: 'নাতিশীতোষ্ণ এবং হিমমণ্ডলীয় অঞ্চলে শীতল মেঘ অবস্থান করে, যেখানে এই বরফ-কেলাস প্রক্রিয়ার মাধ্যমেই বৃষ্টি বা তুষারপাত সংঘটিত হয়।'},
+      {q: 'মধ্য অক্ষাংশের অধিকাংশ বৃষ্টিপাত ও তুষারপাত কোন্ প্রক্রিয়ার মাধ্যমে সৃষ্টি হয়?', opts: ['সংঘর্ষ-সম্মিলন প্রক্রিয়া', 'বরফ কেলাসন প্রক্রিয়া (Ice-crystal process)', 'বিকিরণ প্রক্রিয়া', 'পরিচলন প্রক্রিয়া'], ans: 1, exp: 'মধ্য অক্ষাংশের বা নাতিশীতোষ্ণ মণ্ডলের অধিকাংশ অধঃক্ষেপণ ওয়েগনার-বার্জেরন প্রস্তাবিত এই বরফ কেলাসন প্রক্রিয়ার ফলেই হয়ে থাকে।'},
+      {q: 'মেঘের নীচের বাতাস হিমাঙ্কের ওপরে (উষ্ণ) থাকলে বড়ো বরফ কেলাসগুলি ভূপৃষ্ঠে পতিত হওয়ার সময় কী রূপ ধারণ করে?', opts: ['তুষারপাত (Snow fall)', 'শিলাবৃষ্টি', 'বৃষ্টিপাত (Rain)', 'স্লিট'], ans: 2, exp: 'বরফ কেলাসগুলি ভারী হয়ে নীচের দিকে নামার সময় যদি ভূপৃষ্ঠের কাছাকাছি বাতাসের তাপমাত্রা হিমাঙ্কের ওপরে থাকে, তবে বরফ গলে যায় এবং তা তরল বৃষ্টিরূপে ভূপতিত হয়।'}
+    ]
+  },
+  5: {
+    name: 'Set 5',
+    icon: '💥',
+    topic: 'সংঘর্ষ-সম্মিলন তত্ত্ব (Collision-Coalescence Theory)',
+    questions: [
+      {q: '1950 সালে বৃষ্টিবিন্দু বিকাশের \'সংঘর্ষ-সম্মিলন তত্ত্ব\' (Collision-Coalescence Theory) কোন্ আবহবিদ প্রকাশ করেন?', opts: ['টর বার্জেরন', 'ওয়ালটার ফিন্ডিসন', 'ই জি বোয়েন (E G Bowen)', 'আলফ্রেড ওয়েগনার'], ans: 2, exp: '1950 সালে অস্ট্রেলিয়ার আবহবিদ ই জি বোয়েন \'The formation of rain by coalescence\' শীর্ষক প্রতিবেদনে উষ্ণ মেঘে বৃষ্টিবিন্দু বিকাশের সংঘর্ষ-সম্মিলন তত্ত্বটি প্রকাশ করেন।'},
+      {q: 'ক্রান্তীয় ও নিরক্ষীয় অঞ্চলে সংঘটিত বেশিরভাগ বৃষ্টিপাত কোন্ মেঘ থেকে হয়ে থাকে?', opts: ['শীতল মেঘ', 'উষ্ণ মেঘ (Warm Cloud)', 'পালক মেঘ', 'বরফ মেঘ'], ans: 1, exp: 'ক্রান্তীয় ও নিরক্ষীয় অঞ্চলের মেঘগুলি কদাচিৎ হিমাঙ্ক উষ্ণতায় পৌঁছাতে পারে। তাই এই অঞ্চলের বেশিরভাগ বৃষ্টিপাত উষ্ণ মেঘ থেকেই সংঘর্ষ-সম্মিলন প্রক্রিয়ায় ঘটে থাকে।'},
+      {q: 'সংঘর্ষ-সম্মিলন তত্ত্ব অনুসারে মেঘের মধ্যে জলদকণাগুলিকে অধিগ্রহণ করার জন্য বড়ো জলকণার ব্যাস কমপক্ষে কত হওয়া প্রয়োজন?', opts: ['10 মাইক্রোমিটার', '40 মাইক্রোমিটার (40µm)', '1 মিলিমিটার', '500 মাইক্রোমিটার'], ans: 1, exp: 'বড়ো জলকণার প্রান্তিক গতিবেগ সবচেয়ে বেশি হয়, যার ফলে সে ছোটো জলকণাকে সহজে অধিগ্রহণ করতে পারে। এই প্রক্রিয়ার জন্য বড়ো জলকণার ব্যাস কমপক্ষে ৪০ মাইক্রোমিটার হওয়া বাঞ্ছনীয়।'},
+      {q: 'বৃষ্টিবিন্দুগুলিকে বৈদ্যুতিক ক্ষেত্রে মেরুকরণ বা বিপরীত তড়িৎ আধানসম্পন্ন হতে হয় কেন?', opts: ['যাতে তারা দ্রুত মেঘ থেকে নীচে নেমে আসে', 'যাতে তারা একে অপরকে বিকর্ষণ করে', 'সংঘর্ষে লিপ্ত জলকণাগুলি ঠিকরে যাওয়ার বদলে পরস্পর জুড়ে গিয়ে বড়ো জলকণা তৈরি করে', 'যাতে তারা বরফে পরিণত হয়'], ans: 2, exp: 'অনেক সময় জলকণাগুলির পৃষ্ঠটান মজবুত হওয়ায় সংঘর্ষে লিপ্ত হলে তারা ঠিকরে (rebound) যায়। কিন্তু একটি ধনাত্মক ও অন্যটি ঋণাত্মক আধানসম্পন্ন হলে তারা সহজে জুড়ে গিয়ে বড়ো জলকণা তৈরি করে।'},
+      {q: 'ক্রান্তীয় অঞ্চলে মেঘের গভীরতা কমপক্ষে কত হলে সংঘর্ষ-সম্মিলন প্রক্রিয়ায় বৃষ্টিপাত ভালোভাবে সংঘটিত হয়?', opts: ['১০০০ মিটার', '২০০০ মিটার', '৪০০০ মিটারের বেশি', '৬০০০ মিটার'], ans: 2, exp: 'ক্রান্তীয় অঞ্চলে সংঘর্ষ ও সম্মিলনের জন্য মেঘের গভীরতা বা উলম্ব বিস্তার কমপক্ষে 4000 মিটারের বেশি হওয়া আবশ্যক। এতে জলকণাগুলি বেশি পথ জুড়ে পড়ার সুযোগ পায়।'},
+      {q: 'একটি অধিকতর বড়ো জলবিন্দু অপেক্ষাকৃত ছোটো ও ধীরগামী জলবিন্দুর ভেতর দিয়ে নামার সময় সামনের দিকের অসংখ্য জলকণাকে গ্রহণ করলে তাকে কী বলে?', opts: ['জাগ্রত অধিগ্রহণ (Wake capture)', 'সরাসরি অধিগ্রহণ (Direct capture)', 'প্রান্তিক অধিগ্রহণ', 'বিপরীত অধিগ্রহণ'], ans: 1, exp: 'দ্রুত পতনশীল ফোঁটাটি তার সামনের দিকের অসংখ্য জলকণাকে সোজাসুজি ধাক্কা মেরে নিজের সাথে জুড়ে নিলে তাকে সরাসরি অধিগ্রহণ বলে। এটিই জলকণা বড়ো হওয়ার প্রধান পদ্ধতি।'},
+      {q: 'নামতে থাকা বড়ো জলকণার পিছনের দিকে বাতাসের ঘর্ষণজনিত বাধা হ্রাস পাওয়ায় সম আকৃতির জলকণা বাধাহীনভাবে দ্রুত নেমে অগ্রবর্তী জলকণাকে ধরে ফেললে, তাকে কী বলে?', opts: ['সরাসরি অধিগ্রহণ', 'জাগ্রত অধিগ্রহণ (Wake capture)', 'সম্মিলিত অধিগ্রহণ', 'পৃষ্ঠটান অধিগ্রহণ'], ans: 1, exp: 'বড়ো জলকণার ঠিক পিছনের অংশে (Wake) বাতাসের বাধা কম থাকে। তাই ওপরের জলকণা দ্রুত নেমে সামনের জলকণাকে ধরে ফেলে জুড়ে যায়। একে জাগ্রত অধিগ্রহণ বা Wake capture বলে।'},
+      {q: 'সংগ্রহ দক্ষতা (Collection efficiency) বলতে কী বোঝায়?', opts: ['জলকণাগুলির বাষ্পীভূত হওয়ার হার', 'সংঘর্ষ দক্ষতা ও সম্মিলন দক্ষতার গুণফল', 'প্রান্তিক গতিবেগ ও বাতাসের গতিবেগের অনুপাত', 'জলকণার মেঘ থেকে নীচে নামার সময়'], ans: 1, exp: 'দুটি ফোঁটার ধাক্কা লাগার সম্ভাবনা (সংঘর্ষ দক্ষতা) এবং ধাক্কা লাগার পর জুড়ে যাওয়ার সম্ভাবনা (সম্মিলন দক্ষতা)- এই দুটির গুণফলকেই একত্রে সংগ্রহ দক্ষতা বা Collection efficiency বলা হয়।'},
+      {q: 'ফোঁটার আকৃতি বড়ো হলে সম্মিলন দক্ষতার (Coalescence efficiency) ওপর কী প্রভাব পড়ে?', opts: ['সম্মিলন দক্ষতা হ্রাস পায়', 'সম্মিলন দক্ষতা অপরিবর্তিত থাকে', 'সম্মিলন দক্ষতা বৃদ্ধি পায়', 'ফোঁটাগুলি সর্বদা ঠিকরে যায়'], ans: 2, exp: 'ফোঁটার আকৃতি যত বড়ো হয়, তার সম্মিলন দক্ষতা তত বেশি হয়। অর্থাৎ, বৃহদাকার ফোঁটা ক্ষুদ্রাকৃতি ফোঁটার সঙ্গে খুব সহজেই ধাক্কা লেগে সম্মিলিত হতে পারে।'},
+      {q: 'সম্মিলন দক্ষতার মান কখন ১ একক (1 unit) হয়?', opts: ['যখন সব ক্ষুদ্র ফোঁটা বড়ো ফোঁটার দ্বারা অধিগৃহীত হয়', 'যখন সব ফোঁটা ঠিকরে যায়', 'যখন ফোঁটার ব্যাস 10 মাইক্রোমিটার হয়', 'যখন ফোঁটা বাষ্পীভূত হয়ে যায়'], ans: 0, exp: 'যদি বড়ো ফোঁটাটি তার পথে আসা সমস্ত ক্ষুদ্র ফোঁটাকেই সফলভাবে নিজের সাথে জুড়ে নেয় বা অধিগ্রহণ করে, তবে তখন ওই সম্মিলন দক্ষতার মান সর্বোচ্চ অর্থাৎ ১ একক ধরা হয়।'},
+      {q: 'একাকী সংঘর্ষ-সম্মিলন প্রক্রিয়ায় বৃষ্টির ফোঁটা খুব বড়ো আকৃতিবিশিষ্ট না হলেও, দীর্ঘসময় ধরে ঊর্ধ্বমুখী বায়ুস্রোত (Updraft) বজায় থাকলে বজ্রমেঘে বৃষ্টির ফোঁটার ব্যাস কত হতে পারে?', opts: ['১-২ মিমি', '২-৩ মিমি', '৪-৫ মিমি', '১০ মিমি'], ans: 2, exp: 'উষ্ণ মেঘে দীর্ঘসময় ধরে যদি ঊর্ধ্বমুখী বায়ুস্রোত বজায় থাকে (যেমন বজ্রমেঘ বা Cumulonimbus-এ), তাহলে জলকণা বারবার ওঠানামা করে এবং বৃষ্টির ফোঁটার ব্যাস ৪-৫ মিলিমিটার পর্যন্ত হতে পারে।'},
+      {q: 'কিছু ক্ষেত্রে মেঘাচ্ছন্ন আকাশ থাকলেও বৃষ্টিপাত হয় না কেন?', opts: ['জলদকণাগুলি বাষ্পীভূত হয়ে যায় বলে', 'জলদকণা (Cloud droplet) সম্মিলন প্রক্রিয়ায় বড়ো না হলে আকাশে ভেসে বেড়ায় বলে', 'মেঘের তাপমাত্রা হঠাৎ বেড়ে যায় বলে', 'বাতাসের প্রতিরোধ বল শূন্য হয়ে যায় বলে'], ans: 1, exp: 'জলদকণাগুলি আকারে অতি ক্ষুদ্র হওয়ায় এদের প্রান্তিক গতিবেগ খুব কম হয়। সম্মিলন প্রক্রিয়ায় এরা বড়ো ও ভারী না হলে অভিকর্ষের টানে নীচে নামতে পারে না, আকাশে মেঘ রূপেই ভেসে থাকে।'},
+      {q: 'মেঘের মধ্যে সাধারণ বৃষ্টিবিন্দুগুলি ঊর্ধ্বমুখী বায়ুস্রোতে বাহিত হয়ে পুনরায় নামার সময় বারবার সংঘর্ষের ফলে এত বড়ো হয়ে যায় যে তারা ভেঙে অসংখ্য ক্ষুদ্র জলকণায় পরিণত হয়। একে কী বলে?', opts: ['বার্জেরন প্রক্রিয়া', 'চেইন রিঅ্যাকশন বা ধারাবাহিক প্রক্রিয়া (Chain reaction)', 'সরাসরি অধিগ্রহণ', 'ডায়াবেটিক প্রক্রিয়া'], ans: 1, exp: 'বড়ো ফোঁটা ভেঙে গিয়ে তৈরি হওয়া ক্ষুদ্র জলকণাগুলি ঊর্ধ্বমুখী স্রোতে বাহিত হয়ে পুনরায় অন্য জলকণার সাথে সম্মিলিত হয়। এই ধারাবাহিক প্রক্রিয়াকে চেইন রিঅ্যাকশন বলে, যা বিপুল সংখ্যক বৃষ্টিবিন্দু উৎপন্ন করে।'},
+      {q: 'নিরক্ষীয় বা ক্রান্তীয় অঞ্চলে উষ্ণ মেঘ থেকে বৃষ্টিপাত হয়—এই ধারণাটি কোন্ তত্ত্বের সাথে সঙ্গতিপূর্ণ?', opts: ['বরফ-কেলাস তত্ত্ব', 'সংঘর্ষ-সম্মিলন তত্ত্ব', 'ডার্সির তত্ত্ব', 'পরিচলন তত্ত্ব'], ans: 1, exp: 'উষ্ণ মেঘে যেখানে তাপমাত্রা হিমাঙ্কের ওপরে থাকে, সেখানে বরফ তৈরি হয় না। এই মেঘে জলকণাগুলির পারস্পরিক ধাক্কা ও জুড়ে যাওয়ার মাধ্যমেই বৃষ্টিপাত হয়, যা সংঘর্ষ-সম্মিলন তত্ত্ব দ্বারা ব্যাখ্যা করা হয়।'},
+      {q: 'সাধারণ বৃষ্টিরূপে পতিত হওয়ার জন্য জলকণার ব্যাস অন্তত কত হওয়া প্রয়োজন?', opts: ['০.১ মিমি-এর বেশি', '০.৫ মিমি-এর অধিক', '০.০২ মিমি', '০.২ মিমি-এর কম'], ans: 1, exp: 'সাধারণত ০.৫ মিলিমিটারের অধিক ব্যাসযুক্ত জলকণাগুলি ভারী হয়ে বৃষ্টিরূপে পতিত হয়। এর চেয়ে কম ব্যাসের জলবিন্দুগুলি ঝিরঝিরে বৃষ্টি বা drizzle নামে পরিচিত।'}
+    ]
+  },
+  6: {
+    name: 'Set 6',
+    icon: '🌧️',
+    topic: 'অধঃক্ষেপণের প্রকারভেদ (Types of Precipitation)',
+    questions: [
+      {q: 'পৃথিবীর যাবতীয় অধঃক্ষেপণের কত শতাংশ তরল বৃষ্টিরূপে পতিত হয়?', opts: ['৬০%', '৭০%', '৮০%', '৯০%'], ans: 2, exp: 'মেঘ থেকে জলীয় বাষ্পের বিভিন্ন ঘনীভূত রূপের অধঃক্ষেপণ ঘটে। এর মধ্যে সবচেয়ে বেশি পরিমাণ অর্থাৎ পৃথিবীর যাবতীয় অধঃক্ষেপণের ৮০ শতাংশই বৃষ্টিরূপে পতিত হয়।'},
+      {q: 'ঝিরঝিরে বৃষ্টি বা গুঁড়ি বৃষ্টির (Drizzle) জলকণাগুলির ব্যাস সাধারণত কত মিলিমিটারের মধ্যে থাকে?', opts: ['০.০২ থেকে ০.০৫ মিমি', '০.২ থেকে ০.৫ মিমি', '১ থেকে ৬ মিমি', '৫ মিলিমিটারের বেশি'], ans: 1, exp: 'গুঁড়ি বৃষ্টি বা Drizzle অতি ক্ষুদ্র ক্ষুদ্র জলকণা নিয়ে গঠিত হয়, যেগুলির ব্যাস সাধারণত ০.২ থেকে ০.৫ মিলিমিটারের মধ্যে থাকে এবং এরা খুব ধীরে ধীরে ভূপৃষ্ঠে নেমে আসে।'},
+      {q: 'গুঁড়ি বৃষ্টি (Drizzle) প্রধানত কোন্ ধরনের মেঘ থেকে উৎপন্ন হয়?', opts: ['কিউমুলোনিম্বাস (Cumulonimbus)', 'সিরাস (Cirrus)', 'স্তর মেঘ (Stratus cloud)', 'কিউমুলাস (Cumulus)'], ans: 2, exp: 'গুঁড়ি বৃষ্টি সাধারণত পাতলা ও হালকা স্তর মেঘে উৎপন্ন হয়। এই মেঘে জলকণাগুলি সংঘর্ষ-সম্মিলনের দ্বারা বড়ো বৃষ্টিবিন্দুতে পরিণত হওয়ার সুযোগ খুব কম পায়।'},
+      {q: 'স্বাভাবিক বৃষ্টির ফোঁটার (Raindrop) ব্যাস সাধারণত কত হয়?', opts: ['০.২ - ০.৫ মিমি', '১ - ৬ মিমি', '০.০১ - ০.১ মিমি', '১০ - ১৫ মিমি'], ans: 1, exp: 'অধিকাংশ বৃষ্টি প্রধানত নিম্বোস্ট্র্যাটাস ও কিউমুলোনিম্বাস মেঘ থেকে হয়। নীচে নামার সময় সংঘর্ষ-সম্মিলন প্রক্রিয়ায় জলকণা বড়ো হয় এবং বৃষ্টির ফোঁটার গড় ব্যাস সাধারণত ১ থেকে ৬ মিলিমিটার হয়।'},
+      {q: 'সূর্যের তাপে ভূপৃষ্ঠ-সংলগ্ন উষ্ণ ও আর্দ্র বাতাস ওপরে উঠে প্রসারিত ও শীতল হয়ে যে বৃষ্টিপাত ঘটায়, তাকে কী বৃষ্টি বলে?', opts: ['শৈলোৎক্ষেপ বৃষ্টি', 'পরিচলন বৃষ্টি (Convectional Rain)', 'ঘূর্ণবাত বৃষ্টি', 'সীমান্ত বৃষ্টি'], ans: 1, exp: 'প্রবল সূর্যতাপে বাতাস উষ্ণ ও হালকা হয়ে ওপরে ওঠে এবং ঘনীভূত হয়ে বজ্রগর্ভ মেঘ সৃষ্টি করে বৃষ্টিপাত ঘটায়। একে পরিচলন বৃষ্টি বলে। বিজ্ঞানী ল্যামবার্ট এর ধারণা দেন।'},
+      {q: 'নিরক্ষীয় অঞ্চলে প্রতিদিন বিকেল ৪টে থেকে ৫টার মধ্যে বজ্রবিদ্যুৎ-সহ যে বৃষ্টিপাত হয়, তাকে কী বলা হয়?', opts: ['শৈলোৎক্ষেপ বৃষ্টি', 'ফ্রন্টাল রেইন', 'ফোর ও\'ক্লক রেইন (Four o\'Clock Rain)', 'ড্রিজল'], ans: 2, exp: 'নিরক্ষীয় অঞ্চলে দিনের বেলা প্রবল উত্তাপে জলীয় বাষ্প ওপরে উঠে বিকেল ৪টে থেকে ৫টার মধ্যে নিয়মিত পরিচলন বৃষ্টিপাত ঘটায়, তাই একে Four o\'Clock Rain বলা হয়।'},
+      {q: 'মেঘ থেকে পতিত তুষার কীলক (Snow flake) বা বরফ কেলাসগুলি মূলত কী আকৃতির হয়ে থাকে?', opts: ['গোলাকার', 'পঞ্চভুজাকার', 'ষড়ভুজাকার (Hexagonal)', 'ত্রিভুজাকার'], ans: 2, exp: 'দুটি তুষার কীলক সমরূপী না হলেও, বলা হয় যে সব তুষার কীলকই মূলত ষড়ভুজাকার বা Hexagonal কাঠামোর হয়ে থাকে।'},
+      {q: '১-৫ মিলিমিটার ব্যাসের শঙ্কু বা গোলাকৃতি সাদা বরফকণাকে কী বলা হয়?', opts: ['হীরক ধূলি', 'তুষার দলা বা তুষার দানা (Snow pellet and snow grain)', 'স্লিট', 'গ্লেজ'], ans: 1, exp: 'অতি শীতল জলদকণাগুলি জুড়ে গিয়ে একসাথে জমাট বেঁধে ১ থেকে ৫ মিমি ব্যাসের যে সাদা বরফকণা তৈরি করে, তাদের তুষার দলা বা তুষার দানা বলে।'},
+      {q: '৫ মিলিমিটার বা তার কম ব্যাসযুক্ত জমাটবাঁধা বৃষ্টিবিন্দু বা বরফ ও বৃষ্টির মিশ্রণকে সাধারণভাবে কী বলা হয়?', opts: ['শিলাবৃষ্টি', 'স্লিট (Sleet) বা বরফের গুলি (Ice pellets)', 'তুষারপাত', 'রাইম'], ans: 1, exp: 'ভূপৃষ্ঠের বায়ুস্তর খুব শীতল হলে বৃষ্টির ফোঁটা ভূমি স্পর্শ করার আগেই বরফের গুলি বা জমাটবাঁধা বৃষ্টিবিন্দুতে পরিণত হয়, যাকে স্লিট (Sleet) বা Ice pellets বলে।'},
+      {q: 'অতি শীতল জলকণা ভূপৃষ্ঠের নিকট হিমায়িত বায়ুস্তরে প্রবেশ করলে নীচের কোন্টি উৎপন্ন করে?', opts: ['তুষার বল', 'গ্লেজ (Glaze) বা হিমায়িত বৃষ্টি', 'শিশির', 'ধোঁয়াশা'], ans: 1, exp: 'বৃষ্টির ফোঁটা যখন অতি শীতল ভূপৃষ্ঠ বা হিমায়িত বায়ুস্তরের সংস্পর্শে এসে বরফের স্বচ্ছ আস্তরণ তৈরি করে তখন তাকে গ্লেজ বা হিমায়িত বৃষ্টি (Freezing rain) বলে।'},
+      {q: 'নিম্নলিখিত কোন্ মেঘের সঙ্গে শিলাবৃষ্টি (Hail) সংশ্লিষ্ট?', opts: ['সিরাস মেঘ', 'স্তর মেঘ', 'কিউমুলোনিম্বাস (Cumulonimbus) বা বজ্র মেঘ', 'অল্টোকিউমুলাস'], ans: 2, exp: 'শিলাবৃষ্টি তৈরি হতে গেলে মেঘের মধ্যে প্রবল ঊর্ধ্বমুখী ও নিম্নমুখী বায়ুস্রোতের প্রয়োজন হয়, যা একমাত্র কিউমুলোনিম্বাস বা বজ্র মেঘেই থাকে।'},
+      {q: 'তুষার ঝড়ের (Blizzard) জন্য মূলত কোন্ অধঃক্ষেপণটি দায়ী থাকে?', opts: ['গ্লেজ (Glaze) বা হিমায়িত বৃষ্টির ঝড়', 'শিশির', 'আইস নিডিল', 'গুঁড়ি বৃষ্টি'], ans: 0, exp: 'অতি শীতল হিমায়িত বৃষ্টির সাথে প্রবল বাতাস যুক্ত হলে তুষার ঝড় বা ব্লিজার্ড তৈরি হয়, যেখানে গ্লেজ বা Glaze-এর বিশাল প্রভাব থাকে।'},
+      {q: 'বৃষ্টিপাতের শ্রেণিবিভাগে পর্বতীয় বৃষ্টিপাত তত্ত্বের ধারণা সর্বপ্রথম কে দিয়েছিলেন?', opts: ['ডেসকার্টিন', 'হ্যালি (Halley)', 'ল্যামবার্ট', 'ওয়েগনার'], ans: 1, exp: 'বৃষ্টিপাতের শ্রেণিবিভাগে পর্বতীয় বা শৈলোৎক্ষেপ বৃষ্টিপাত (Orographic rainfall) তত্ত্বের ধারণা দেন বিজ্ঞানী হ্যালি এবং পরিচলন বৃষ্টিপাতের ধারণা দেন ল্যামবার্ট।'},
+      {q: 'নিচের কোল্টি শীতল মেঘে (Cold cloud) সৃষ্টি হওয়া অধঃক্ষেপণের রূপ নয়?', opts: ['শিলাবৃষ্টি', 'তুষারপাত', 'তুষার বল', 'গ্লেজ (Glaze)'], ans: 3, exp: 'শিলাবৃষ্টি, তুষারপাত ইত্যাদি হিমাঙ্কের নীচে থাকা শীতল মেঘে গঠিত হয়। কিন্তু গ্লেজ বা হিমায়িত বৃষ্টি সাধারণত উষ্ণ বা মিশ্র মেঘের বৃষ্টিবিন্দু ভূপৃষ্ঠের কাছাকাছি এসে অতি শীতল স্তরে পড়ার সময় সৃষ্টি হয়।'},
+      {q: 'বাতাসে ভাসছে বলে মনে হয় এমন বরফের পাতলা ফলা বা ক্ষুদ্র পাতলা পাত, যা খুবই কম তাপমাত্রায় সৃষ্টি হয়, তাকে কী বলে?', opts: ['স্লিট', 'গ্লেজ', 'হীরক ধূলি বা বরফের নিডিল (Diamond dust or Ice needles)', 'তুষার দলা'], ans: 2, exp: 'অত্যন্ত কম তাপমাত্রায় মেঘহীন আকাশে বরফের অতি ক্ষুদ্র ও হালকা কেলাস তৈরি হয়, যেগুলি ভাসমান অবস্থায় হিরের মতো চমকায়। এদের হীরক ধূলি বা আইস নিডিল বলে।'}
+    ]
+  },
+  7: {
+    name: 'Set 7',
+    icon: '🌊',
+    topic: 'বায়ুমণ্ডলে জল - বিবিধ (Mixed Review)',
+    questions: [
+      {q: 'সমুদ্র উপকূল অঞ্চলে বাতাসে জলীয় বাষ্পের সর্বাধিক উপস্থিতি কত শতাংশ হতে পারে?', opts: ['0.4%', '1%', '4%', '10%'], ans: 2, exp: 'সমগ্র বায়ুমণ্ডলে জলীয় বাষ্পের গড় পরিমাণ 0.4% হলেও, সমুদ্র উপকূলবর্তী উষ্ণ ও আর্দ্র অঞ্চলে বাতাসে এর পরিমাণ সর্বাধিক ৪% পর্যন্ত হতে পারে।'},
+      {q: 'জলীয় বাষ্পের সংকোচন ও প্রসারণ তত্ত্বের ধারণা প্রথম কে প্রদান করেন?', opts: ['হ্যালি', 'ডেসকার্টিন (Descartes)', 'ল্যামবার্ট', 'বার্জেরন'], ans: 1, exp: 'অধঃক্ষেপণ প্রক্রিয়া-সম্বন্ধীয় প্রাচীন অনুমানভিত্তিক তত্ত্বগুলির মধ্যে জলীয় বাষ্পের সংকোচন ও প্রসারণ তত্ত্বের ধারণা দিয়েছিলেন বিজ্ঞানী ডেসকার্টিন।'},
+      {q: '১ ঘনসেমি আয়তনের বায়ুতে সর্বাধিক সংখ্যক ঘনীভবন কেন্দ্রাণু বা লবণকণার উপস্থিতি কত হতে পারে?', opts: ['১০', '১০০', '১০০০', '১০০০০'], ans: 2, exp: 'বায়ুমণ্ডলের ১ ঘনসেমি আয়তনে 0.1µm-এর কম ব্যাসার্ধযুক্ত জলাকর্ষী কণা বা লবণকণা সাধারণত ১০ থেকে ১০০০-এর মধ্যে থাকে।'},
+      {q: 'নিচের যে কণা-আশ্রিত জলীয় বাষ্প পরিমণ্ডলের বাতাস ১০০% সম্পৃক্ত হওয়ার অনেক আগেই সম্পৃক্ত হয়, তা হলো—', opts: ['সূক্ষ্ম কাদাকণা', 'সূক্ষ্ম খনিজ কণা', 'লবণকণা (Salt particle)', 'ফুলের রেণু'], ans: 2, exp: 'লবণকণার দ্রবণীয় প্রভাব (solute effect) অত্যন্ত বেশি। তাই লবণকণাকে ঘিরে থাকা জলকণা বাতাসের আপেক্ষিক আর্দ্রতা ১০০% হওয়ার অনেক আগেই (৭০-৮০% আর্দ্রতায়) সম্পৃক্ত হয়ে যায়।'},
+      {q: 'তুষার কীলকগুলি সিক্ত (wet) বা ভেজা ভেজা থাকলে সংঘর্ষে লিপ্ত হওয়ার সাথে সাথে কী হয়?', opts: ['তারা গ্যাসে পরিণত হয়', 'তারা ভেঙে টুকরো হয়ে যায়', 'তারা পরস্পর জুড়ে যায়', 'তারা বৃষ্টিবিন্দুতে পরিণত হয়'], ans: 2, exp: 'অপেক্ষাকৃত বেশি তাপমাত্রায় তুষার কীলকগুলি ভেজা থাকে এবং নীচে নামার সময় সংঘর্ষে লিপ্ত হলে তারা খুব সহজেই পরস্পর জুড়ে গিয়ে বড়ো তুষার খণ্ডে (snow flake) পরিণত হয়।'},
+      {q: 'শীতল বাতাসের সংস্পর্শে আর্দ্র বাতাস এলে নীচের যে ঘনীভূত রূপটি সৃষ্টি হয় তা হলো—', opts: ['শিশির', 'হালকা বরফ', 'স্লিট', 'কুয়াশা (Fog)'], ans: 3, exp: 'ভূপৃষ্ঠের কাছাকাছি জলীয় বাষ্পপূর্ণ আর্দ্র বায়ু শীতল বাতাসের সংস্পর্শে এলে ঘনীভূত হয়ে ভাসমান ক্ষুদ্র ক্ষুদ্র জলকণার সৃষ্টি করে, যা কুয়াশা নামে পরিচিত।'},
+      {q: 'ঘনীভবন প্রক্রিয়ার চলক (Variables) বা নিয়ন্ত্রক মূলত কী কী?', opts: ['বায়ুর চাপ ও পৃথিবীর আবর্তন', 'শীতলীকরণের মাত্রা ও আপেক্ষিক আর্দ্রতা', 'অক্ষাংশ ও দ্রাঘিমাংশ', 'সৌরকিরণ ও মেঘের রং'], ans: 1, exp: 'ঘনীভবন প্রধানত বাতাসের আপেক্ষিক আর্দ্রতা এবং বায়ু কতটা বা কত দ্রুত শীতল হচ্ছে (শীতলীকরণের মাত্রা) তার ওপর নির্ভর করে।'},
+      {q: 'নিরক্ষীয় অঞ্চল এবং মহাদেশের অভ্যন্তরে উত্তর গোলার্ধে প্রধানত কোন্ বৃষ্টিপাত বেশি হয়ে থাকে?', opts: ['শৈলোৎক্ষেপ বৃষ্টিপাত', 'পরিচলন বৃষ্টিপাত (Convectional Rain)', 'ঘূর্ণবাত বৃষ্টিপাত', 'সীমান্ত বৃষ্টিপাত'], ans: 1, exp: 'এই অঞ্চলগুলিতে প্রবল সূর্যতাপে বাতাস হালকা হয়ে ওপরে উঠে যায়, প্রসারিত ও ঘনীভূত হয়ে প্রচুর পরিচলন বৃষ্টিপাত ঘটায়।'},
+      {q: 'মেঘের মধ্যে বরফ কেলাস অতি শীতল জলবিন্দুর বিনিময়ে বড়ো হতে থাকার কারণ কী?', opts: ['জলপৃষ্ঠ অপেক্ষা বরফপৃষ্ঠে বাষ্পচাপ বেশি', 'বরফপৃষ্ঠ অপেক্ষা শীতল জলপৃষ্ঠে সম্পৃক্ত বাষ্পচাপ বেশি', 'বরফ জলবিন্দুকে আকর্ষণ করে', 'অভিকর্ষজ বলের প্রভাবে'], ans: 1, exp: 'হিমাঙ্কের নীচে জলপৃষ্ঠে সম্পৃক্ত বাষ্পচাপ বেশি থাকায় জলকণা থেকে বরফকণার দিকে তীব্র বাষ্পচাপের ঢাল তৈরি হয়, যার ফলে জলীয় বাষ্প সরাসরি বরফপৃষ্ঠে জমাট বাঁধে।'},
+      {q: 'মেঘে ঘনীভবন কেন্দ্রাণুর সংখ্যা অপেক্ষা জলদকণার (Cloud droplet) সংখ্যা কেমন হয়?', opts: ['বেশি হয়', 'সমান হয়', 'অনেক কম হয়', 'দ্বিগুণ হয়'], ans: 2, exp: 'ক্ষুদ্র কেন্দ্রাণুগুলির বক্রতাজনিত প্রভাবের জন্য সেগুলিতে ঘনীভবন ঘটে না, ঘনীভবন কেবল অপেক্ষাকৃত বড়ো ও সক্রিয় কেন্দ্রাণুর ওপর শুরু হয়। তাই কেন্দ্রাণুর তুলনায় জলদকণার সংখ্যা অনেক কম থাকে।'},
+      {q: 'নিচের কোল্টি অধঃক্ষেপণের (Precipitation) সঙ্গে যুক্ত নয়?', opts: ['তুষারপাত', 'শিলাবৃষ্টি', 'বৃষ্টি', 'কুয়াশা (Fog)'], ans: 3, exp: 'কুয়াশা হলো ভূপৃষ্ঠের কাছাকাছি বাতাসে ভাসমান জলকণা, এটি কোনোভাবেই মেঘ থেকে ভূপৃষ্ঠে পতিত হয় না, তাই এটি ঘনীভবনের রূপ হলেও অধঃক্ষেপণ নয়।'},
+      {q: 'শিলাবৃষ্টি মূলত কৃষিকার্যের পক্ষে ক্ষতিকর কেন?', opts: ['এটি মাটি দূষিত করে', 'এটি মাটির লবণতা বাড়ায়', 'বড়ো বড়ো শিলের টুকরো ফসলের পাতা ও ডাল ভেঙে ক্ষতি করে', 'এটি খরা সৃষ্টি করে'], ans: 2, exp: 'শিলাবৃষ্টির সময় আকাশ থেকে বরফের বড়ো বড়ো টুকরো বা শিল প্রবল বেগে নীচে পড়ে, যার আঘাতে মাঠের ফসল, গাছের পাতা ও ফল চরমভাবে ক্ষতিগ্রস্ত হয়।'},
+      {q: 'বাষ্পচাপের ঊর্ধ্বক্রম মাত্রা অনুযায়ী ঘনীভবন কণাগুলিকে পরপর সাজালে কোন্ ক্রমটি সঠিক?', opts: ['শীতল জলদকণা → জলদকণা → বরফকণা → অতি সম্পৃক্ত জলদকণা', 'বরফকণা → অতি সম্পৃক্ত জলদকণা → শীতল জলদকণা → জলদকণা', 'বরফকণা → জলদকণা → শীতল জলদকণা → অতি সম্পৃক্ত জলদকণা', 'অতি সম্পৃক্ত জলদকণা → জলদকণা → শীতল জলদকণা → বরফকণা'], ans: 2, exp: 'হিমাঙ্কের নীচে সম্পৃক্ত বাষ্পচাপ বরফকণার ওপর সবচেয়ে কম থাকে এবং অতিশীতল জলদকণার ওপর বেশি থাকে। তাই ঊর্ধ্বক্রম অনুযায়ী (কম থেকে বেশি) সাজালে: বরফকণা → জলদকণা → শীতল জলদকণা → অতি সম্পৃক্ত জলদকণা হয়।'},
+      {q: 'শীতলতার ক্রমবর্ধমান মাত্রা অনুযায়ী জলীয় বাষ্পের ঘনীভূত রূপগুলিকে পরপর সাজালে কোন্ ক্রমটি পাওয়া যায়?', opts: ['কুয়াশা → তুহিন → শিশির → রাইম', 'কুয়াশা → শিশির → রাইম → তুহিন', 'রাইম → শিশির → কুয়াশা → তুহিন', 'শিশির → তুহিন → কুয়াশা → রাইম'], ans: 1, exp: 'কুয়াশা ও শিশির হিমাঙ্কের ওপরের উষ্ণতায় তৈরি হয়। তাপমাত্রা আরও কমলে রাইম (কঠিনীভূত শিশির) এবং তার চেয়েও নীচে বা হিমাঙ্কের অনেক নীচে তুহিন (Frost) বা বরফ কেলাস গঠিত হয়।'},
+      {q: 'কোন মেঘকে \'Thunder cloud\' বা বজ্রমেঘ বলা হয়?', opts: ['সিরাস', 'অল্টোকিউমুলাস', 'কিউমুলোনিম্বাস (Cumulonimbus)', 'নিম্বোস্ট্র্যাটাস'], ans: 2, exp: 'উলম্বভাবে বহুদূর পর্যন্ত বিস্তৃত এই মেঘের মধ্যে প্রবল বায়ুপ্রবাহ থাকে, যা থেকে তীব্র বজ্রপাত, শিলাবৃষ্টি ও ভারী বর্ষণ হয়, তাই একে বজ্রমেঘ বা Thunder cloud বলা হয়।'}
+    ]
+  }
+};
+
+// ============================================================
+//  গ্লোবাল ভেরিয়েবল
+// ============================================================
+const LABELS = ['ক', 'খ', 'গ', 'ঘ'];
+let currentSetId = 1;
+let cur = 0, score = 0, wrong = 0, answered = false, timerInterval, timeLeft = 10 * 60;
+let userAnswers = [];
+let isLoggedIn = false;
+let currentUser = null;
+let pendingSetId = null;
+
+// ============================================================
+//  হাব পেজ বিল্ড
+// ============================================================
+function buildHub() {
+  const grid = document.getElementById('setGrid');
+  grid.innerHTML = '';
+  for (let i = 1; i <= TOTAL_SETS; i++) {
+    const set = allSets[i];
+    const card = document.createElement('div');
+    card.className = 'set-card';
+    card.innerHTML = `
+      <div class="icon">${set.icon}</div>
+      <div class="set-num">${set.name}</div>
+      <div class="set-title">${set.topic}</div>
+      <div class="set-meta"><span>১৫ প্রশ্ন</span><span>১০ মিনিট</span></div>
+    `;
+    card.onclick = () => selectSet(i);
+    grid.appendChild(card);
+  }
+}
+
+function showHub() {
+  document.getElementById('hubPage').classList.remove('hidden');
+  document.getElementById('testArea').classList.add('hidden');
+  document.getElementById('resultWrap').classList.remove('show');
+  document.getElementById('timerBox').classList.remove('danger');
+  clearInterval(timerInterval);
+  if (currentUser) {
+    document.getElementById('hubUserInfo').innerHTML = `👤 ${currentUser.username} — Test দিতে সেট সিলেক্ট করো।`;
+  } else {
+    document.getElementById('hubUserInfo').innerHTML = '';
+  }
+}
+
+function goToHub() {
+  document.getElementById('testArea').classList.add('hidden');
+  document.getElementById('resultWrap').classList.remove('show');
+  document.getElementById('hubPage').classList.remove('hidden');
+  document.getElementById('timerBox').classList.remove('danger');
+  clearInterval(timerInterval);
+  isLoggedIn = false;
+  currentUser = null;
+}
+
+// ============================================================
+//  সেট সিলেক্ট - সবসময় লগইন চেক
+// ============================================================
+function selectSet(id) {
+  currentSetId = id;
+  const set = allSets[id];
+  pendingSetId = id;
+  document.getElementById('loginSetName').textContent = `📚 ${set.name} — ${set.topic}`;
+  document.getElementById('loginOverlay').classList.add('active');
+  document.getElementById('loginUsername').value = '';
+  document.getElementById('loginPassword').value = '';
+  document.getElementById('loginError').style.display = 'none';
+  document.getElementById('limitInfo').style.display = 'none';
+  document.getElementById('loginBtn').disabled = false;
+  document.getElementById('loginUsername').focus();
+}
+
+// ============================================================
+//  লগইন ফাংশন
+// ============================================================
+function doLoginFromSet() {
+  const username = document.getElementById('loginUsername').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+  const errorEl = document.getElementById('loginError');
+  const limitInfo = document.getElementById('limitInfo');
+  const loginBtn = document.getElementById('loginBtn');
+
+  if (!username || !password) {
+    errorEl.textContent = '❌ দয়া করে ইউজারনেম ও পাসওয়ার্ড দিন।';
+    errorEl.style.display = 'block';
+    return;
+  }
+
+  const user = userData.find(u => u.username === username && u.password === password);
+  if (user) {
+    const setAttempts = user.attempts[currentSetId] || 0;
+    if (setAttempts >= MAX_ATTEMPTS) {
+      limitInfo.style.display = 'block';
+      document.getElementById('limitMsg').textContent = `আপনি এই অ্যাকাউন্ট দিয়ে ${allSets[currentSetId].name} এর সর্বোচ্চ ${MAX_ATTEMPTS} বার Test দিয়েছেন। আর Test দেওয়া সম্ভব নয়।`;
+      errorEl.style.display = 'none';
+      loginBtn.disabled = true;
+      return;
+    }
+    
+    isLoggedIn = true;
+    currentUser = user;
+    errorEl.style.display = 'none';
+    limitInfo.style.display = 'none';
+    loginBtn.disabled = false;
+    document.getElementById('loginOverlay').classList.remove('active');
+    
+    document.getElementById('hubUserInfo').innerHTML = `👤 ${currentUser.username} — Test দিতে সেট সিলেক্ট করো।`;
+    
+    startQuiz(currentSetId);
+  } else {
+    errorEl.textContent = '❌ ভুল ইউজারনেম বা পাসওয়ার্ড। আবার চেষ্টা করুন।';
+    errorEl.style.display = 'block';
+    limitInfo.style.display = 'none';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('loginPassword').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doLoginFromSet();
+  });
+  document.getElementById('loginUsername').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doLoginFromSet();
+  });
+  buildHub();
+  document.getElementById('hubPage').classList.remove('hidden');
+  document.getElementById('testArea').classList.add('hidden');
+  document.getElementById('resultWrap').classList.remove('show');
+});
+
+// ============================================================
+//  কুইজ ফাংশন
+// ============================================================
+function startQuiz(setId) {
+  if (!isLoggedIn || !currentUser) return;
+  
+  const setAttempts = currentUser.attempts[setId] || 0;
+  if (setAttempts >= MAX_ATTEMPTS) {
+    alert(`⚠️ আপনি এই সেটের সর্বোচ্চ ${MAX_ATTEMPTS} বার Test দিয়েছেন।`);
+    return;
+  }
+  
+  currentUser.attempts[setId] = (currentUser.attempts[setId] || 0) + 1;
+  
+  cur = 0; score = 0; wrong = 0; answered = false;
+  timeLeft = 10 * 60; userAnswers = [];
+  document.getElementById('hubPage').classList.add('hidden');
+  document.getElementById('resultWrap').classList.remove('show');
+  document.getElementById('testArea').classList.remove('hidden');
+  document.getElementById('timerBox').classList.remove('danger');
+  
+  const set = allSets[setId];
+  document.getElementById('testSetLabel').textContent = set.name;
+  document.getElementById('testSetName').textContent = 'ভূগোল';
+  document.getElementById('testTopic').textContent = set.topic;
+  
+  clearInterval(timerInterval);
+  timerInterval = setInterval(tick, 1000);
+  loadQ();
+}
+
+function tick() {
+  timeLeft--;
+  const m = Math.floor(timeLeft / 60);
+  const s = timeLeft % 60;
+  document.getElementById('timerDisplay').textContent = m + ':' + (s < 10 ? '0' : '') + s;
+  if (timeLeft <= 60) document.getElementById('timerBox').classList.add('danger');
+  if (timeLeft <= 0) { clearInterval(timerInterval); showResult(); }
+}
+
+function loadQ() {
+  answered = false;
+  const set = allSets[currentSetId];
+  const q = set.questions[cur];
+  document.getElementById('qNum').textContent = 'প্রশ্ন ' + (cur + 1) + ' / ' + set.questions.length;
+  document.getElementById('qText').textContent = q.q;
+  document.getElementById('progressFill').style.width = ((cur + 1) / set.questions.length * 100) + '%';
+  document.getElementById('nextBtn').disabled = true;
+  document.getElementById('nextBtn').textContent = cur === set.questions.length - 1 ? 'ফলাফল দেখো' : 'পরবর্তী →';
+  document.getElementById('explanation').classList.remove('show');
+
+  const opts = document.getElementById('qOpts');
+  opts.innerHTML = '';
+  q.opts.forEach((o, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.innerHTML = '<div class="opt-circle">' + LABELS[i] + '</div><div class="opt-text">' + o + '</div>';
+    btn.onclick = () => answer(i);
+    opts.appendChild(btn);
+  });
+}
+
+function answer(i) {
+  if (answered) return;
+  answered = true;
+  const set = allSets[currentSetId];
+  const q = set.questions[cur];
+  userAnswers[cur] = i;
+  const btns = document.querySelectorAll('.opt');
+  btns.forEach(b => b.classList.add('disabled'));
+  btns[q.ans].classList.add('correct');
+  if (i !== q.ans) { btns[i].classList.add('wrong'); wrong++; }
+  else score++;
+  document.getElementById('scoreShow').textContent = 'সঠিক: ' + score + ' | ভুল: ' + wrong;
+  document.getElementById('explanationText').innerHTML = '<strong>ব্যাখ্যা:</strong> ' + q.exp;
+  document.getElementById('explanation').classList.add('show');
+  document.getElementById('nextBtn').disabled = false;
+}
+
+function nextQ() {
+  const set = allSets[currentSetId];
+  cur++;
+  if (cur >= set.questions.length) { clearInterval(timerInterval); showResult(); return; }
+  loadQ();
+}
+
+function showResult() {
+  document.getElementById('testArea').classList.add('hidden');
+  const rw = document.getElementById('resultWrap');
+  rw.classList.add('show');
+  const set = allSets[currentSetId];
+  const pct = Math.round(score / set.questions.length * 100);
+  document.getElementById('finalScore').textContent = score;
+  document.getElementById('rbCorrect').textContent = score;
+  document.getElementById('rbWrong').textContent = wrong;
+  document.getElementById('rbPct').textContent = pct + '%';
+  
+  const remaining = MAX_ATTEMPTS - (currentUser.attempts[currentSetId] || 0);
+  document.getElementById('attemptInfo').innerHTML = `👤 ${currentUser.username} — ${set.name}: বাকি আছে <strong>${remaining}</strong> বার Test দেওয়ার সুযোগ (সর্বোচ্চ ${MAX_ATTEMPTS} বার)`;
+  
+  const grades = [
+    [90, '🌟', 'অসাধারণ!'],
+    [70, '👍', 'খুব ভালো!'],
+    [50, '📚', 'ভালো চেষ্টা!'],
+    [0, '💪', 'চেষ্টা চালিয়ে যাও!']
+  ];
+  const g = grades.find(x => pct >= x[0]);
+  document.getElementById('resultIcon').textContent = g[1];
+  document.getElementById('resultGrade').textContent = g[2] + ' (' + set.topic + ')';
+}
+
+function showReview() {
+  document.getElementById('resultWrap').classList.remove('show');
+  document.getElementById('testArea').classList.remove('hidden');
+  cur = 0;
+  loadReview();
+}
+
+function loadReview() {
+  const set = allSets[currentSetId];
+  if (cur >= set.questions.length) { 
+    document.getElementById('testArea').classList.add('hidden'); 
+    document.getElementById('resultWrap').classList.add('show'); 
+    return; 
+  }
+  const q = set.questions[cur];
+  document.getElementById('qNum').textContent = 'Review — প্রশ্ন ' + (cur + 1) + ' / ' + set.questions.length;
+  document.getElementById('qText').textContent = q.q;
+  document.getElementById('progressFill').style.width = ((cur + 1) / set.questions.length * 100) + '%';
+  document.getElementById('nextBtn').disabled = false;
+  document.getElementById('nextBtn').textContent = cur === set.questions.length - 1 ? 'শেষ করো' : 'পরবর্তী →';
+  document.getElementById('nextBtn').onclick = () => { cur++; loadReview(); };
+
+  const opts = document.getElementById('qOpts');
+  opts.innerHTML = '';
+  q.opts.forEach((o, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt disabled';
+    if (i === q.ans) btn.classList.add('correct');
+    else if (userAnswers[cur] === i) btn.classList.add('wrong');
+    btn.innerHTML = '<div class="opt-circle">' + LABELS[i] + '</div><div class="opt-text">' + o + '</div>';
+    opts.appendChild(btn);
+  });
+
+  document.getElementById('explanationText').innerHTML = '<strong>ব্যাখ্যা:</strong> ' + q.exp;
+  document.getElementById('explanation').classList.add('show');
+  document.getElementById('scoreShow').textContent = 'সবুজ = সঠিক উত্তর';
+}
+</script>
+
+</body>
+</html>
